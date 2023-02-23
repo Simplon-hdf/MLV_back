@@ -18,7 +18,7 @@ describe('ArticleService', () => {
   afterEach(async () => {
     await PrismaService.$disconnect();
   });
-
+// test create
   describe('create', () => {
     it('should create an article', async () => {
       const data = {
@@ -42,14 +42,14 @@ describe('ArticleService', () => {
       expect(createdArticle).toMatchObject(data);
     });
   });
-
+ // test findAll
   describe('findAll', () => {
     it('should return an array of articles', async () => {
       const articles = await service.findAll();
       expect(Array.isArray(articles)).toBe(true);
     });
   });
-
+  // test findOne
   describe('findOne', () => {
     it('should return an article by id', async () => {
       const article = await service.findOne(1);
@@ -57,8 +57,24 @@ describe('ArticleService', () => {
       expect(article.id).toBe(1);
     });
   });
+  //test update
+  describe('update', () => {
+    it('should update an article by id', async () => {
+      const data = {
+        titre: 'Updated article',
+      };
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+      const updatedArticle = await service.update(1, data);
+
+      expect(updatedArticle.titre).toBe(data.titre);
+    });
+  });
+// test remove
+  describe('remove', () => {
+    it('should remove an article by id', async () => {
+      const removedArticle = await service.remove(1);
+
+      expect(removedArticle.id).toBe(1);
+    });
   });
 });
