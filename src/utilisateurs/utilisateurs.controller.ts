@@ -50,4 +50,9 @@ export class UtilisateursController {
   ) {
     return this.utilisateursService.updatePassword(+id, updateUtilisateurDto);
   }
+  //find by email
+  @Get('email/:email')
+  findByEmail(@Param('email') email: string) {
+    return this.utilisateursService.findOneByEmail(email);
+  }
 }

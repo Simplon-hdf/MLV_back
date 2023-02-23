@@ -116,4 +116,9 @@ export class UtilisateursService {
       data: { mot_de_passe: hashedPassword },
     });
   }
+
+  // Trouver un utilisateur par email
+  async findOneByEmail(email: string): Promise<Utilisateur> {
+    return this.prisma.utilisateur.findFirst({ where: { email } });
+  }
 }

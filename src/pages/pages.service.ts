@@ -1,25 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, page } from '@prisma/client';
-import { NotFoundException } from '@nestjs/common';
+import { page } from '@prisma/client';
+
 @Injectable()
 export class PagesService {
   constructor(private prisma: PrismaService) {}
 
-  async createPage(data: Prisma.pageCreateInput): Promise<page> {
-    return this.prisma.page.create({
-      data,
+  async create(createPageDto: CreatePageDto): Promise<page> {
+    const page = await this.prisma.page.create({
+      data: createPageDto,
     });
-  }
-  create(createPageDto: CreatePageDto) {
-    return this.createPage(createPageDto);
-  }
-  async findAll(): Promise<page[]> {
-    return this.prisma.page.findMany();
+    return page;
   }
 
+  async findAll(): Promise<page[]> {
+    const pages = await this.prisma.page.findMany();
+    return pages;
+  }
   async findOne(id: number): Promise<page> {
     const page = await this.prisma.page.findUnique({
       where: { id },
@@ -37,11 +36,10 @@ export class PagesService {
     if (!page) {
       throw new NotFoundException(`Page with ID ${id} not found`);
     }
-    const updatePage = await this.prisma.page.update({
+    return this.prisma.page.update({
       where: { id },
       data: updatePageDto,
     });
-    return updatePage;
   }
 
   async remove(id: number): Promise<page> {
@@ -51,7 +49,6 @@ export class PagesService {
     if (!page) {
       throw new NotFoundException(`Page with ID ${id} not found`);
     }
-    const deletedPage = await this.prisma.page.delete({ where: { id } });
-    return deletedPage;
+    return this.prisma.page.delete({ where: { id } });
   }
 }
