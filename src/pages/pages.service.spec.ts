@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PagesService } from './pages.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePageDto } from './dto/create-page.dto';
-import { UpdatePageDto } from './dto/update-page.dto';
 import { NotFoundException } from '@nestjs/common';
 import { PrismaClient, page } from '@prisma/client';
 
@@ -13,7 +12,7 @@ describe('PagesService', () => {
 
   beforeAll(async () => {
     // modif avant chaques fonctions
-    const moduleRef = await Test.createTestingModule({
+    const moduleRef: TestingModule = await Test.createTestingModule({
       providers: [PrismaService, PagesService],
     }).compile();
 
