@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testsuites name="jest tests" tests="21" failures="1" errors="0" time="4.272">
   <testsuite name="PrismaClientExceptionFilter" errors="0" failures="0" skipped="0" timestamp="2023-02-24T09:38:34" time="2.689" tests="1">
     <testcase classname="PrismaClientExceptionFilter should be defined" name="PrismaClientExceptionFilter should be defined" time="0.001">
@@ -12,6 +13,139 @@
   </testsuite>
   <testsuite name="UtilisateursController" errors="0" failures="0" skipped="0" timestamp="2023-02-24T09:38:34" time="3.027" tests="5">
     <testcase classname="UtilisateursController create should return the created user" name="UtilisateursController create should return the created user" time="0.008">
+=======
+<testsuites name="jest tests" tests="19" failures="5" errors="0" time="6.768">
+  <testsuite name="AppController" errors="0" failures="1" skipped="0" timestamp="2023-02-24T11:14:30" time="5.175" tests="1">
+    <testcase classname="AppController root should return &quot;Hello World!&quot;" name="AppController root should return &quot;Hello World!&quot;" time="0.009">
+      <failure>Error: Nest can&apos;t resolve dependencies of the AppController (?). Please make sure that the argument AuthService at index [0] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If AuthService is a provider, is it part of the current RootTestModule?
+- If AuthService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing AuthService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:247:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:200:33)
+    at TestingInjector.resolveComponentInstance (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:120:38)
+    at async Promise.all (index 0)
+    at TestingInjector.resolveConstructorParams (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:135:27)
+    at TestingInjector.loadInstance (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:61:13)
+    at TestingInjector.loadController (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:79:9)
+    at /Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:61:13
+    at async Promise.all (index 0)
+    at TestingInstanceLoader.createInstancesOfControllers (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:60:9)
+    at /Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:35:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:32:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:21:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-module.builder.js:97:9)
+    at TestingModuleBuilder.compile (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-module.builder.js:63:9)
+    at Object.&lt;anonymous&gt; (/Users/kurtdelannoy/programmation/MLV_back/src/app.controller.spec.ts:9:32)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="PagesService" errors="0" failures="2" skipped="0" timestamp="2023-02-24T11:14:30" time="5.306" tests="3">
+    <testcase classname="PagesService create should be create the new page" name="PagesService create should be create the new page" time="0.204">
+    </testcase>
+    <testcase classname="PagesService findAll should be find all pages" name="PagesService findAll should be find all pages" time="0.007">
+      <failure>Error: expect(received).toHaveBeenCalled()
+
+Matcher error: received value must be a mock or spy function
+
+Received has type:  function
+Received has value: [Function anonymous]
+    at Object.&lt;anonymous&gt; (/Users/kurtdelannoy/programmation/MLV_back/src/pages/pages.service.spec.ts:86:36)</failure>
+    </testcase>
+    <testcase classname="PagesService findOne should return a single page by id" name="PagesService findOne should return a single page by id" time="0.01">
+      <failure>Error: expect(received).toHaveBeenCalledWith(...expected)
+
+Matcher error: received value must be a mock or spy function
+
+Received has type:  function
+Received has value: [Function anonymous]
+    at Object.&lt;anonymous&gt; (/Users/kurtdelannoy/programmation/MLV_back/src/pages/pages.service.spec.ts:108:38)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="PagesController" errors="0" failures="1" skipped="0" timestamp="2023-02-24T11:14:30" time="5.551" tests="1">
+    <testcase classname="PagesController should be defined" name="PagesController should be defined" time="0.007">
+      <failure>Error: Nest can&apos;t resolve dependencies of the PagesService (?). Please make sure that the argument PrismaService at index [0] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If PrismaService is a provider, is it part of the current RootTestModule?
+- If PrismaService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing PrismaService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:247:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:200:33)
+    at TestingInjector.resolveComponentInstance (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:120:38)
+    at async Promise.all (index 0)
+    at TestingInjector.resolveConstructorParams (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:135:27)
+    at TestingInjector.loadInstance (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:61:13)
+    at TestingInjector.loadProvider (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:88:9)
+    at /Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:49:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:48:9)
+    at /Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:33:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:32:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:21:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-module.builder.js:97:9)
+    at TestingModuleBuilder.compile (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-module.builder.js:63:9)
+    at Object.&lt;anonymous&gt; (/Users/kurtdelannoy/programmation/MLV_back/src/pages/pages.controller.spec.ts:9:35)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="AuthService" errors="0" failures="1" skipped="0" timestamp="2023-02-24T11:14:35" time="0.743" tests="1">
+    <testcase classname="AuthService should be defined" name="AuthService should be defined" time="0.007">
+      <failure>Error: Nest can&apos;t resolve dependencies of the AuthService (?, JwtService). Please make sure that the argument UtilisateursService at index [0] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If UtilisateursService is a provider, is it part of the current RootTestModule?
+- If UtilisateursService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing UtilisateursService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:247:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:200:33)
+    at TestingInjector.resolveComponentInstance (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:120:38)
+    at async Promise.all (index 0)
+    at TestingInjector.resolveConstructorParams (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:135:27)
+    at TestingInjector.loadInstance (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:61:13)
+    at TestingInjector.loadProvider (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/injector.js:88:9)
+    at /Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:49:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:48:9)
+    at /Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:33:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:32:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/core/injector/instance-loader.js:21:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-module.builder.js:97:9)
+    at TestingModuleBuilder.compile (/Users/kurtdelannoy/programmation/MLV_back/node_modules/@nestjs/testing/testing-module.builder.js:63:9)
+    at Object.&lt;anonymous&gt; (/Users/kurtdelannoy/programmation/MLV_back/src/auth/auth.service.spec.ts:8:35)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="PrismaClientExceptionFilter" errors="0" failures="0" skipped="0" timestamp="2023-02-24T11:14:35" time="0.711" tests="1">
+    <testcase classname="PrismaClientExceptionFilter should be defined" name="PrismaClientExceptionFilter should be defined" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="UtilisateursController" errors="0" failures="0" skipped="0" timestamp="2023-02-24T11:14:30" time="5.707" tests="5">
+    <testcase classname="UtilisateursController create should return the created user" name="UtilisateursController create should return the created user" time="0.006">
+>>>>>>> a93afca (test: add testing for page.service)
     </testcase>
     <testcase classname="UtilisateursController findAll should return an array of users" name="UtilisateursController findAll should return an array of users" time="0.001">
     </testcase>
@@ -22,6 +156,7 @@
     <testcase classname="UtilisateursController remove should delete the  user" name="UtilisateursController remove should delete the  user" time="0.001">
     </testcase>
   </testsuite>
+<<<<<<< HEAD
   <testsuite name="UtilisateursService" errors="0" failures="0" skipped="0" timestamp="2023-02-24T09:38:34" time="3.853" tests="7">
     <testcase classname="UtilisateursService createUtilisateur should create a new user with hashed password" name="UtilisateursService createUtilisateur should create a new user with hashed password" time="0.271">
     </testcase>
@@ -53,6 +188,22 @@
       <failure>UnauthorizedException: Identifiants incorrects
     at AuthService.validateUser (/Users/nathancuvelier/MLV_back/src/auth/auth.service.ts:26:13)
     at Object.&lt;anonymous&gt; (/Users/nathancuvelier/MLV_back/src/auth/auth.service.spec.ts:91:20)</failure>
+=======
+  <testsuite name="UtilisateursService" errors="0" failures="0" skipped="0" timestamp="2023-02-24T11:14:30" time="6.471" tests="7">
+    <testcase classname="UtilisateursService createUtilisateur should create a new user with hashed password" name="UtilisateursService createUtilisateur should create a new user with hashed password" time="0.304">
+    </testcase>
+    <testcase classname="UtilisateursService findMany should return an array of users" name="UtilisateursService findMany should return an array of users" time="0.129">
+    </testcase>
+    <testcase classname="UtilisateursService findMany findOne should return the user with the specified id" name="UtilisateursService findMany findOne should return the user with the specified id" time="0.075">
+    </testcase>
+    <testcase classname="UtilisateursService findMany deleteUtilisateur should delete the user with the specified id" name="UtilisateursService findMany deleteUtilisateur should delete the user with the specified id" time="0.081">
+    </testcase>
+    <testcase classname="UtilisateursService updatePassword should update the password of the user with the specified id" name="UtilisateursService updatePassword should update the password of the user with the specified id" time="0.258">
+    </testcase>
+    <testcase classname="UtilisateursService updatePassword should throw an error if the user is not found" name="UtilisateursService updatePassword should throw an error if the user is not found" time="0.071">
+    </testcase>
+    <testcase classname="UtilisateursService updatePassword should throw an error if the current password is incorrect" name="UtilisateursService updatePassword should throw an error if the current password is incorrect" time="0.125">
+>>>>>>> a93afca (test: add testing for page.service)
     </testcase>
   </testsuite>
 </testsuites>
