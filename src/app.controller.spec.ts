@@ -1,22 +1,38 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AuthService } from './auth/auth.service';
 
 describe('AppController', () => {
-  let appController: AppController;
+  let controller: AppController;
+  let authService: AuthService;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const authMock = {
+      login: jest.fn().mockReturnValue({ access_token: 'test_token' }),
+    };
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [{ provide: AuthService, useValue: authMock }],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    controller = module.get<AppController>(AppController);
+    authService = module.get<AuthService>(AuthService);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+  describe('login', () => {
+    it('should return access token', async () => {
+      const req = { user: { id: 1, email: 'test@example.com' } };
+      const result = await controller.login(req);
+      expect(authService.login).toHaveBeenCalledWith(req.user);
+      expect(result).toEqual({ access_token: 'test_token' });
+    });
+  });
+
+  describe('getProfile', () => {
+    it('should return user profile', () => {
+      const req = { user: { id: 1, email: 'test@example.com' } };
+      const result = controller.getProfile(req);
+      expect(result).toEqual(req.user);
     });
   });
 });

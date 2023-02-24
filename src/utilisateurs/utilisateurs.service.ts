@@ -121,4 +121,8 @@ export class UtilisateursService {
   async findOneByEmail(email: string): Promise<Utilisateur> {
     return this.prisma.utilisateur.findFirst({ where: { email } });
   }
+
+  async deleteManyUtilisateur() {
+    return this.prisma.utilisateur.deleteMany();
+  }
 }

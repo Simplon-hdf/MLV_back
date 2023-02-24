@@ -5,9 +5,8 @@ import { PrismaClient, utilisateur } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { CreateUtilisateurDto } from './dto/create-utilisateur.dto';
 import { v4 as uuidv4 } from 'uuid';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { UpdatePasswordUtilisateurDto } from './dto/update-password-utilisateur.dto';
-import { Utilisateur } from './entities/utilisateur.entity';
 
 function USER_NOT_FOUND_ERROR(id: number) {
   return `User with ID ${id} not found`;
