@@ -1,45 +1,57 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePageDto } from './dto/create-page.dto';
-import { PrismaService } from '../prisma/prisma.service';
 import { UpdatePageDto } from './dto/update-page.dto';
-import { page } from '@prisma/client';
-
+import { PrismaService } from '../prisma/prisma.service';
+import { Prisma, page } from '@prisma/client';
+import { NotFoundException } from '@nestjs/common';
 @Injectable()
 export class PagesService {
   constructor(private prisma: PrismaService) {}
 
-  create(createPageDto: CreatePageDto) {
+  async createPage(data: Prisma.pageCreateInput): Promise<page> {
     return this.prisma.page.create({
-      data: createPageDto,
+      data,
     });
   }
-
-  findAll() {
+  create(createPageDto: CreatePageDto) {
+    return this.createPage(createPageDto);
+  }
+  async findAll(): Promise<page[]> {
     return this.prisma.page.findMany();
   }
 
-  findOne(number: number) {
-    return this.prisma.page.findUnique({
-      where: {
-        id: number,
-      },
+  async findOne(id: number): Promise<page> {
+    const page = await this.prisma.page.findUnique({
+      where: { id },
     });
+    if (!page) {
+      throw new NotFoundException(`Page with ID ${id} not found`);
+    }
+    return page;
   }
 
-  update(number: number, updatePageDto: UpdatePageDto) {
-    return this.prisma.page.update({
-      where: {
-        id: number,
-      },
+  async update(id: number, updatePageDto: UpdatePageDto): Promise<page> {
+    const page = await this.prisma.page.findUnique({
+      where: { id },
+    });
+    if (!page) {
+      throw new NotFoundException(`Page with ID ${id} not found`);
+    }
+    const updatePage = await this.prisma.page.update({
+      where: { id },
       data: updatePageDto,
     });
+    return updatePage;
   }
 
-  remove(number: number) {
-    return this.prisma.page.delete({
-      where: {
-        id: number,
-      },
+  async remove(id: number): Promise<page> {
+    const page = await this.prisma.page.findUnique({
+      where: { id },
     });
+    if (!page) {
+      throw new NotFoundException(`Page with ID ${id} not found`);
+    }
+    const deletedPage = await this.prisma.page.delete({ where: { id } });
+    return deletedPage;
   }
 }
