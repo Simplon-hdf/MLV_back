@@ -9,6 +9,7 @@ export class AppController {
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
+  //login with dto
   async login(@Request() req) {
     return this.authService.login(req.user);
   }
@@ -16,9 +17,5 @@ export class AppController {
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
-  }
-
-  getHello() {
-    return undefined;
   }
 }

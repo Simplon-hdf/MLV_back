@@ -113,7 +113,7 @@ enum role {
 model utilisateur {
   id             Int             @id @unique @default(autoincrement())
   uuid           String          @unique @db.VarChar(50)
-  email          String          @unique @db.VarChar(50)
+  email          String          @db.VarChar(50)
   nom            String          @db.VarChar(50)
   prenom         String          @db.VarChar(50)
   date_naissance DateTime        @db.Date
