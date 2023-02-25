@@ -17,7 +17,7 @@ export class ArticleController {
 
   @Post('create-article')
   create(@Body() createArticleDto: CreateArticleDto) {
-    return this.articleService.create(createArticleDto);
+    return this.articleService.createArticle(createArticleDto);
   }
 
   @Get('articles')
@@ -32,7 +32,7 @@ export class ArticleController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
-    return this.articleService.update(+id, updateArticleDto);
+    return this.articleService.updateArticle(+id, updateArticleDto);
   }
 
   @Delete(':id')

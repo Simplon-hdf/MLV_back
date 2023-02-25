@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { post } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
@@ -8,8 +9,9 @@ import { Article } from './entities/article.entity';
 export class ArticleService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createArticleDto: CreateArticleDto) {
-    return await this.prisma.post.create({
+  createArticle(createArticleDto: CreateArticleDto) {
+    createArticleDto.date_creation = new Date();
+    return this.prisma.post.create({
       data: createArticleDto,
     });
   }
@@ -20,13 +22,14 @@ export class ArticleService {
 
   findOne(id: number) {
     return this.prisma.post.findUnique({
-      where: { id: id },
+      select: { id: true },
+      where: { id },
     });
   }
 
-  update(id: number, updateArticleDto: UpdateArticleDto) {
+  updateArticle(id: number, updateArticleDto: UpdateArticleDto) {
     return this.prisma.post.update({
-      where: { id: id },
+      where: { id },
       data: {
         ...updateArticleDto,
       },
@@ -35,7 +38,7 @@ export class ArticleService {
 
   remove(id: number) {
     return this.prisma.post.delete({
-      where: { id: id },
+      where: { id },
     });
   }
 }
