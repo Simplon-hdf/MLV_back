@@ -6,12 +6,23 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { UtilisateursService } from '../utilisateurs/utilisateurs.service';
 import * as bcrypt from 'bcrypt';
+import { Utilisateur } from '../utilisateurs/entities/utilisateur.entity';
+import { MailService } from '../mail/mail.service';
+import { CreateUtilisateurDto } from '../utilisateurs/dto/create-utilisateur.dto';
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly mailService: MailService,
     private readonly usersService: UtilisateursService,
     private readonly jwtService: JwtService,
   ) {}
+  async signUp(user: CreateUtilisateurDto) {
+    const token = Math.floor(1000 + Math.random() * 9000).toString();
+    // create user in db
+    await this.usersService.createUtilisateur(user);
+    // send confirmation mail
+    await this.mailService.sendUserConfirmation(user, token);
+  }
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findOneByEmail(email);

@@ -7,8 +7,12 @@ import { LocalStrategy } from './strategy/local.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { AppController } from '../app.controller';
 import { UtilisateursModule } from '../utilisateurs/utilisateurs.module';
+import { PasswordResetController } from './password-reset/password-reset.controller';
+import { PasswordResetService } from './password-reset/password-reset.service';
+import { UtilisateursService } from '../utilisateurs/utilisateurs.service';
+import { PrismaService } from '../prisma/prisma.service';
 @Module({
-  controllers: [AppController],
+  controllers: [AppController, PasswordResetController],
   imports: [
     UtilisateursModule,
     PassportModule,
@@ -17,7 +21,14 @@ import { UtilisateursModule } from '../utilisateurs/utilisateurs.module';
       signOptions: { expiresIn: '6000000000s' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [
+    PrismaService,
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    PasswordResetService,
+    UtilisateursService,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}
