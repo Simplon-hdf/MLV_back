@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PagesService } from './pages.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePageDto } from './dto/create-page.dto';
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { PrismaClient, page } from '@prisma/client';
 
 describe('PagesService', () => {
@@ -64,8 +64,14 @@ describe('PagesService', () => {
       };
 
       const allPages: CreatePageDto[] = [page1, page2];
-
+      // --------------------
+      jest
+        .spyOn(prisma.page, 'findMany')
+        .mockResolvedValueOnce(allPages as page[]);
+      const result = await pages.findAll();
       expect(allPages).toHaveLength(2);
+      //----------------------
+      expect(result).toEqual(allPages as page[]);
     });
   });
   // ----------------------------
@@ -81,10 +87,25 @@ describe('PagesService', () => {
 
       const createdPage = await pages.create(onePage);
       // retourne une page par son id
-      const result = await prisma.page.findUnique({
-        where: { id: createdPage.id },
-      });
+      // const result = await prisma.page.findUnique({
+      //   where: { id: createdPage.id },
+      // });
+      const result = await pages.findOne(createdPage.id);
+
       expect(result).toEqual(createdPage);
+    });
+    //----------------------------------------
+    it('should throw NotFoundError if page not found', async () => {
+      const invalidId = 'invalidId';
+
+      jest.spyOn(prisma.page, 'findUnique').mockResolvedValueOnce(null);
+
+      await expect(pages.findOne(+invalidId)).rejects.toThrow(
+        NotFoundException,
+      );
+      expect(prisma.page.findUnique).toHaveBeenCalledWith({
+        where: { id: +invalidId },
+      });
     });
   });
   // ----------------------------
@@ -99,11 +120,24 @@ describe('PagesService', () => {
       };
 
       const createdPage = await pages.create(createPageDto);
-      const result = await prisma.page.delete({
+
+      jest.spyOn(prisma.page, 'delete').mockResolvedValueOnce(createdPage);
+      const result = await pages.remove(createdPage.id);
+
+      expect(prisma.page.delete).toHaveBeenCalledWith({
         where: { id: createdPage.id },
       });
-
+      // const result = await prisma.page.delete({
+      //   where: { id: createdPage.id },
+      // });
       expect(result).toEqual(createdPage);
+    });
+
+    it('should throw NotFoundError if page not found', async () => {
+      jest.spyOn(prisma.page, 'delete').mockResolvedValueOnce(null);
+
+      await expect(pages.remove(1)).rejects.toThrow(NotFoundException);
+      expect(prisma.page.delete).toHaveBeenCalledWith({ where: { id: 1 } });
     });
   });
 });
