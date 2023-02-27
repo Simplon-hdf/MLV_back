@@ -45,13 +45,14 @@ export class PagesService {
   }
 
   async remove(id: number): Promise<page> {
-    const page = await this.prisma.page.findUnique({
+    const page = await this.prisma.page.delete({
       where: { id },
     });
     if (!page) {
       throw new NotFoundException(`Page with ID ${id} not found`);
     }
-    const deletedPage = await this.prisma.page.delete({ where: { id } });
-    return deletedPage;
+    // const deletedPage = await this.prisma.page.delete({ where: { id } });
+    // return deletedPage;
+    return page;
   }
 }
