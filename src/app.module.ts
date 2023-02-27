@@ -9,6 +9,7 @@ import { ArticleModule } from './article/article.module';
 
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ConfigModule } from '@nestjs/config';
     PagesModule,
     AuthModule,
     MailModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
