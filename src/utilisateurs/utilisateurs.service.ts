@@ -116,13 +116,17 @@ export class UtilisateursService {
       data: { mot_de_passe: hashedPassword },
     });
   }
+  async changePassword(mail, mot_de_passe: string) {
+    const salt = await bcrypt.genSalt(SaltLength.Default);
+    const hashedPassword = await bcrypt.hash(mot_de_passe, salt);
+    return this.prisma.utilisateur.update({
+      where: { email: mail },
+      data: { mot_de_passe: hashedPassword },
+    });
+  }
 
   // Trouver un utilisateur par email
   async findOneByEmail(email: string): Promise<Utilisateur> {
     return this.prisma.utilisateur.findFirst({ where: { email } });
-  }
-
-  async deleteManyUtilisateur() {
-    return this.prisma.utilisateur.deleteMany();
   }
 }

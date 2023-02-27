@@ -7,8 +7,20 @@ import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
 import { ArticleModule } from './article/article.module';
 
+import { MailModule } from './mail/mail.module';
+import { ConfigModule } from '@nestjs/config';
+
 @Module({
-  imports: [UtilisateursModule, ArticleModule, PagesModule, AuthModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    UtilisateursModule,
+    ArticleModule,
+    PagesModule,
+    AuthModule,
+    MailModule,
+  ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
