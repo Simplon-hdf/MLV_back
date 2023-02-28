@@ -13,6 +13,10 @@ import { LoginDto } from './auth/dto/login.dto';
 import { CreateUtilisateurDto } from './utilisateurs/dto/create-utilisateur.dto';
 import { MailService } from './mail/mail.service';
 import { PrismaService } from './prisma/prisma.service';
+import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
+import { Roles } from './auth/roles/roles.decorator';
+import { RoleGuard } from './auth/role/role.guard';
+import { RolesEnum } from './enum/roles.enum';
 
 @Controller()
 export class AppController {
@@ -36,9 +40,10 @@ export class AppController {
     return this.authService.signUp(user);
   }
 
+  @Roles('jeune', 'administrateur')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('profile')
   getProfile(@Request() req) {
-    console.log(req.user);
     return req.user;
   }
 }
