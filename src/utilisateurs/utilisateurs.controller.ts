@@ -6,11 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UtilisateursService } from './utilisateurs.service';
 import { CreateUtilisateurDto } from './dto/create-utilisateur.dto';
 import { UpdateUtilisateurDto } from './dto/update-utilisateur.dto';
 import { UpdatePasswordUtilisateurDto } from './dto/update-password-utilisateur.dto';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { RoleGuard } from 'src/auth/role/role.guard';
+import { Roles } from '../auth/roles/roles.decorator';
 
 @Controller('utilisateurs')
 export class UtilisateursController {
@@ -21,6 +25,8 @@ export class UtilisateursController {
     return this.utilisateursService.createUtilisateur(createUtilisateurDto);
   }
 
+  @Roles('jeune', 'conseiller')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get()
   findAll() {
     return this.utilisateursService.findAll();
