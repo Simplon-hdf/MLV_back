@@ -1,23 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { CreateImageDto } from './dto/create-image.dto';
-import { UpdateImageDto } from './dto/update-image.dto';
+import { createWriteStream } from 'fs';
+import * as sharp from 'sharp';
+import * as path from 'path';
+import * as fs from 'fs/promises';
 
 @Injectable()
 export class ImagesService {
+  async compressAndSaveImage(file: Express.Multer.File) {
+    const compressedImageBuffer = await sharp(file.buffer)
+      .resize({ width: 500 })
+      .toBuffer();
+
+    const fileName = `${Date.now()}-${file.originalname}`;
+    const filePath = path.join(__dirname, '..', 'public', 'images', fileName);
+
+    await fs.writeFile(filePath, compressedImageBuffer);
+
+    return { url: `/images/${fileName}` };
+  }
+
   create(createImageDto: CreateImageDto) {
     return 'This action adds a new image';
   }
 
-  findAll() {
-    return `This action returns all images`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} image`;
-  }
-
-  update(id: number, updateImageDto: UpdateImageDto) {
-    return `This action updates a #${id} image`;
+  compress(img: CreateImageDto) {
+    return 'This action adds a new image';
   }
 
   remove(id: number) {

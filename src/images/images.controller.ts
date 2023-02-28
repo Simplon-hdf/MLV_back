@@ -1,31 +1,58 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipeBuilder,
+  HttpStatus,
+} from '@nestjs/common';
 import { ImagesService } from './images.service';
-import { CreateImageDto } from './dto/create-image.dto';
-import { UpdateImageDto } from './dto/update-image.dto';
+import * as sharp from 'sharp';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('images')
 export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
 
-  @Post()
-  create(@Body() createImageDto: CreateImageDto) {
-    return this.imagesService.create(createImageDto);
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadImage(@UploadedFile() file: Express.Multer.File) {
+    return await this.imagesService.compressAndSaveImage(file);
   }
 
-  @Get()
-  findAll() {
-    return this.imagesService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.imagesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateImageDto: UpdateImageDto) {
-    return this.imagesService.update(+id, updateImageDto);
-  }
+  // @Post('compress') // compress file with (resize, extension, quality) of image
+  // async compressImage(inputBuffer: Buffer): Promise<Buffer> {
+  //   const outputBuffer = await sharp(inputBuffer)
+  //     .resize(800, 600)
+  //     .jpeg({ quality: 80 })
+  //     .toBuffer();
+  //
+  //   return await outputBuffer;
+  // }
+  // @Post('upload') // upload file with specifications
+  // @UseInterceptors(
+  //   UploadedFile(
+  //     new ParseFilePipeBuilder()
+  //       .addFileTypeValidator({
+  //         fileType: 'jpeg',
+  //       })
+  //       .addMaxSizeValidator({
+  //         maxSize: 1000,
+  //       })
+  //       .build({
+  //         errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+  //       }),
+  //   ),
+  // )
+  // async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<void> {
+  //   const fileData = file.buffer;
+  //   await this.imagesService.storeFile(fileData);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
