@@ -12,14 +12,28 @@ describe('ImagesService', () => {
     service = module.get<ImagesService>(ImagesService);
   });
 
-  describe('compressAndSaveImage', () => {
-    it('should compress and save the image', async () => {
-      // Create a mock image file
-      const buffer = Buffer.from('test image');
-      const file = {
-        buffer,
-        originalname: 'test.jpg',
-      } as Express.Multer.File;
+  describe('create', () => {
+    it('should return a string message', () => {
+      const createImageDto = {};
+      expect(service.create(createImageDto)).toEqual(
+        'This action adds a new image',
+      );
+    });
+  });
+
+  describe('compress', () => {
+    it('should return a string message', () => {
+      const createImageDto = {};
+      expect(service.compress(createImageDto)).toEqual(
+        'This action adds a new image',
+      );
+    });
+  });
+
+  describe('remove', () => {
+    it('should return a string message with the image id', () => {
+      const id = 123;
+      expect(service.remove(id)).toEqual(`This action removes a #${id} image`);
     });
   });
 });

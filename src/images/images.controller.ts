@@ -24,7 +24,7 @@ export class ImagesController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('image'))
   async uploadImage(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: { originalname: string; buffer: any },
     // @Query('format') format: string,
   ) {
     return await this.imagesService.compressAndSaveImage(file, [
