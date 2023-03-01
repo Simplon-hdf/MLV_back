@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { MailService } from '../../mail/mail.service';
 import { UtilisateursService } from '../../utilisateurs/utilisateurs.service';
@@ -11,6 +12,10 @@ import { JwtService } from '@nestjs/jwt';
 import { PasswordResetService } from './password-reset.service';
 import { passwordForgotDto } from '../dto/password-forgot.dto';
 import { passwordResetDto } from '../dto/password-reset.dto';
+import { JwtAuthGuard } from '../guard/jwt-auth.guard';
+import { RoleGuard } from '../role/role.guard';
+import { Roles } from '../roles/roles.decorator';
+
 @Controller('password-reset')
 export class PasswordResetController {
   constructor(
@@ -19,7 +24,8 @@ export class PasswordResetController {
     private readonly mailService: MailService,
     private readonly jwtService: JwtService,
   ) {}
-
+  @Roles('jeune')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('/forgot-password')
   async forgotPassword(@Body() dto: passwordForgotDto) {
     console.log(dto.email);
@@ -54,7 +60,8 @@ export class PasswordResetController {
 
     // Envoyez un e-mail avec le jeton
   }
-
+  @Roles('jeune')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('/reset-password')
   async resetPassword(@Body() body: passwordResetDto): Promise<void> {
     if (!body.token || !body.password) {
