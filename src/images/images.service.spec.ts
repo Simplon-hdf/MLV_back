@@ -12,7 +12,28 @@ describe('ImagesService', () => {
     service = module.get<ImagesService>(ImagesService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('create', () => {
+    it('should return a string message', () => {
+      const createImageDto = {};
+      expect(service.create(createImageDto)).toEqual(
+        'This action adds a new image',
+      );
+    });
+  });
+
+  describe('compress', () => {
+    it('should return a string message', () => {
+      const createImageDto = {};
+      expect(service.compress(createImageDto)).toEqual(
+        'This action adds a new image',
+      );
+    });
+  });
+
+  describe('remove', () => {
+    it('should return a string message with the image id', () => {
+      const id = 123;
+      expect(service.remove(id)).toEqual(`This action removes a #${id} image`);
+    });
   });
 });
