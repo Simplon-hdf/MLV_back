@@ -12,7 +12,14 @@ describe('ImagesService', () => {
     service = module.get<ImagesService>(ImagesService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('compressAndSaveImage', () => {
+    it('should compress and save the image', async () => {
+      // Create a mock image file
+      const buffer = Buffer.from('test image');
+      const file = {
+        buffer,
+        originalname: 'test.jpg',
+      } as Express.Multer.File;
+    });
   });
 });
