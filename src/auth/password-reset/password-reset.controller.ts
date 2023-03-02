@@ -15,8 +15,10 @@ import { passwordResetDto } from '../dto/password-reset.dto';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { RoleGuard } from '../role/role.guard';
 import { Roles } from '../roles/roles.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('password-reset')
+@ApiTags('Password-reset')
 export class PasswordResetController {
   constructor(
     private readonly passwordResetService: PasswordResetService,

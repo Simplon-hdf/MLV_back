@@ -1,12 +1,13 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -14,15 +15,22 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 import { Roles } from '../auth/roles/roles.decorator';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { RoleGuard } from '../auth/role/role.guard';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { RolesEnum } from '../enum/roles.enum';
 
 @Controller('article')
+@ApiTags('Article')
 export class ArticleController {
   constructor(private articleService: ArticleService) {}
 
   @Roles('conseiller', 'moderateur', 'administrateur')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create-article')
-  create(@Body() createArticleDto: CreateArticleDto) {
+  @ApiQuery({ name: 'role', enum: RolesEnum })
+  async create(
+    @Body() createArticleDto: CreateArticleDto,
+    @Query('role') role: RolesEnum = RolesEnum.administrateur,
+  ) {
     return this.articleService.createArticle(createArticleDto);
   }
 
@@ -34,21 +42,34 @@ export class ArticleController {
   @Roles('conseiller', 'moderateur', 'administrateur')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @ApiQuery({ name: 'role', enum: RolesEnum })
+  async findOne(
+    @Param('id') id: string,
+    @Query('role') role: RolesEnum = RolesEnum.administrateur,
+  ) {
     return this.articleService.findOne(+id);
   }
 
   @Roles('conseiller', 'moderateur', 'administrateur')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
+  @ApiQuery({ name: 'role', enum: RolesEnum })
+  async update(
+    @Param('id') id: string,
+    @Body() updateArticleDto: UpdateArticleDto,
+    @Query('role') role: RolesEnum = RolesEnum.administrateur,
+  ) {
     return this.articleService.updateArticle(+id, updateArticleDto);
   }
 
   @Roles('conseiller', 'moderateur', 'administrateur')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @ApiQuery({ name: 'role', enum: RolesEnum })
+  async remove(
+    @Param('id') id: string,
+    @Query('role') role: RolesEnum = RolesEnum.administrateur,
+  ) {
     return this.articleService.remove(+id);
   }
 }
