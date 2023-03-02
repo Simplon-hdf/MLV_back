@@ -15,8 +15,10 @@ import { UpdatePasswordUtilisateurDto } from './dto/update-password-utilisateur.
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { Roles } from '../auth/roles/roles.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('utilisateurs')
+@ApiTags('Utilisateurs')
 export class UtilisateursController {
   constructor(private readonly utilisateursService: UtilisateursService) {}
 

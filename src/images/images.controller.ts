@@ -19,8 +19,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('images')
+@ApiTags('Images')
 export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
 
