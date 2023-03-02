@@ -24,11 +24,13 @@ import { extname } from 'path';
 export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
 
+  // récupere une image, la redimensionne, la compresse puis la sauvegarde
+  // dans le dossier public/images.
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: './res/public/images', // externaliser le chemin.
         filename: (req, file, cb) => {
           const randomName = Array(32)
             .fill(null)
@@ -38,7 +40,7 @@ export class ImagesController {
         },
       }),
       fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif|svg)$/)) {
           return cb(new Error('Only image files are allowed!'), false);
         }
         cb(null, true);
@@ -50,16 +52,7 @@ export class ImagesController {
   )
   async uploadImage(@UploadedFile() file) {
     // Resizing image to 300x300 using sharp module
-    const compressedImage = await sharp(file.buffer)
-      .resize(300, 300)
-      .toFormat('jpeg')
-      .jpeg({ quality: 75 }) // compress JPEG images
-      .png({ quality: 60 }) // compress PNG images
-      .gif({ quality: 60 }) // compress GIF images
-      .svg({ quality: 60 }) // compress SVG images
-      .toBuffer();
-
-    // Do something with the image (e.g. save it to the database, etc.)
+    this.imagesService.compressImage(file, 'jpeg'); // Do something with the image (e.g. save it to the database, etc.)
 
     // Return the image file name and path
     return {
@@ -68,9 +61,9 @@ export class ImagesController {
     };
   }
 
-  @Delete(':url')
-  async delete(@Param('url') id: string) {
-    const image = await this.imagesService.findOne(url);
+  @Delete(':path')
+  async delete(@Param('path') filename: string) {
+    const image = await this.imagesService.remove(filename);
     if (!image) {
       throw new NotFoundException('Image does not exist!');
     }

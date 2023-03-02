@@ -29,25 +29,32 @@ export class ImagesService {
         const filePath = path.join(
           __dirname,
           '..',
+          'res',
           'public',
           'images',
           fileName,
         );
         await fs.writeFile(filePath, compressedImageBuffer);
-        return { url: `/images/${fileName}` };
+        return { url: `/res/public/images/${fileName}` };
       }),
     );
     return compressedImages;
   }
-  create(createImageDto: CreateImageDto) {
-    return 'This action adds a new image';
+
+  // compress images
+  async compressImage(file: Express.Multer.File, format: string = 'jpeg') {
+    const compressedImage = await sharp(file.buffer)
+      .resize(300, 300)
+      .toFormat(format)
+      .jpeg({ quality: 75 }) // compress JPEG images
+      .png({ quality: 60 }) // compress PNG images
+      .gif({ quality: 60 }) // compress GIF images
+      .svg({ quality: 60 }) // compress SVG images
+      .toBuffer();
+    return compressedImage;
   }
 
-  compress(img: CreateImageDto) {
-    return 'This action adds a new image';
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} image`;
+  remove(filename) {
+    fs.unlink('../res/public/images/' + filename); // externaliser le chemin.
   }
 }
