@@ -26,7 +26,7 @@ export class ImagesController {
 
   // récupere une image, la redimensionne, la compresse puis la sauvegarde
   // dans le dossier public/images.
-  @Post('upload')
+  @Post('upload:path')
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -46,7 +46,7 @@ export class ImagesController {
         cb(null, true);
       },
       limits: {
-        fileSize: 1024 * 1024, // limit to 1MB
+        fileSize: 4096 * 4096, // limit to 1MB
       },
     }),
   )
@@ -64,7 +64,7 @@ export class ImagesController {
   @Delete(':path')
   async delete(@Param('path') filename: string) {
     const image = await this.imagesService.remove(filename);
-    if (!image) {
+    if (image === undefined) {
       throw new NotFoundException('Image does not exist!');
     }
   }
