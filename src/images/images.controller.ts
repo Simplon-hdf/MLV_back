@@ -75,7 +75,7 @@ export class ImagesController {
     };
   }
 
-  @Delete('delete')
+  @Delete('images/:filename')
   async delete(@Param('filename') filename: string) {
     console.log('delete call debug -> controller');
     const image = await this.imagesService.remove(filename);
