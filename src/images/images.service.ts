@@ -24,7 +24,6 @@ export class ImagesService {
     const writeStream = createWriteStream(filePath);
     writeStream.write(compressedImage);
     return compressedImage;
->>>>>>> feature/imageCompresse
   }
 
   /*remove(filename) {
