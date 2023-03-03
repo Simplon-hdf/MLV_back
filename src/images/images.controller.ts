@@ -20,6 +20,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { ApiConsumes, ApiTags, ApiBody } from '@nestjs/swagger';
+import * as fs from 'fs/promises';
+import { v4 as uuidv4 } from 'uuid';
 
 @Controller('images')
 @ApiTags('Images')
@@ -43,19 +45,16 @@ export class ImagesController {
   })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('file', {
       storage: diskStorage({
         destination: './res/public/images', // externaliser le chemin.
         filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
+          const randomName = uuidv4(); //Array(32)
           cb(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
       fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|gif|svg)$/)) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif|svg|pdf)$/)) {
           return cb(new Error('Only image files are allowed!'), false);
         }
         cb(null, true);
@@ -71,13 +70,14 @@ export class ImagesController {
 
     // Return the image file name and path
     return {
-      filename: file.filename,
-      path: file.path,
+      originalFilename: file.originalname,
+      compressedFilename: `${file.filename}`,
     };
   }
 
-  @Delete(':path')
-  async delete(@Param('path') filename: string) {
+  @Delete('delete')
+  async delete(@Param('filename') filename: string) {
+    console.log('delete call debug -> controller');
     const image = await this.imagesService.remove(filename);
     if (image === undefined) {
       throw new NotFoundException('Image does not exist!');
