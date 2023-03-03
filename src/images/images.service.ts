@@ -11,20 +11,20 @@ export class ImagesService {
   // compress images
   async compressImage(file: Express.Multer.File, format: string = 'jpg') {
     console.log('compress call debug');
+    const baseDir = './res/public/images/';
+    const filePath = path.join(baseDir, file.filename);
     const compressedImage = await sharp(file.path)
       .resize({ width: 200, height: 200 })
       .jpeg({ quality: 80 }) // compress JPEG images
       .png({ quality: 80 }) // compress PNG images
       .gif({ quality: 80 }) // compress GIF images
-      .pdf({ quality: 60 }) // compress PDF images
-      //.toBuffer()
       .toFormat(format)
-      .toFile('./res/public/images/' + file.filename, (err, info) => {
-        if (err) {
-          throw new BadRequestException(err);
-        }
-      }); // externaliser le chemin.
-    return sharp(compressedImage);
+      .toBuffer();
+
+    const writeStream = createWriteStream(filePath);
+    writeStream.write(compressedImage);
+    return compressedImage;
+>>>>>>> feature/imageCompresse
   }
 
   /*remove(filename) {
