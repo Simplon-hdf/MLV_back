@@ -9,6 +9,7 @@ import { ArticleModule } from './article/article.module';
 
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
+import { MessagesService } from './messages/messages.service';
 
 @Module({
   imports: [
