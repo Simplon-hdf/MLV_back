@@ -74,7 +74,16 @@ export class ImagesController {
       compressedFilename: `${file.filename}`,
     };
   }
+  // get url of image or page
+  async getUrlForDelete(imageUrl: string) {
+    const url = await this.imagesService.getUrl(imageUrl);
+    // delete url with correct target
+    // si c'est une image d'article
 
+    // supprimer l'url dans la table image
+    // sinon si c'est une image de page
+    // supprimer l'url dans la table page
+  }
   @Delete('images/:filename')
   async delete(@Param('filename') filename: string) {
     console.log('delete call debug -> controller');
@@ -82,5 +91,8 @@ export class ImagesController {
     if (image === undefined) {
       throw new NotFoundException('Image does not exist!');
     }
+  }
+  async saveUrl(imageUrl: string, element: string, id: number) {
+    const url = await this.imagesService.stockUrl(imageUrl, element, id);
   }
 }
