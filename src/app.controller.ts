@@ -4,6 +4,8 @@ import {
   Get,
   Post,
   Request,
+  Res,
+  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth/auth.service';
@@ -32,18 +34,27 @@ export class AppController {
     type: LoginDto,
   })
   //login with dto
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Request() req, @Res() res) {
+    //save token in cookie
+    const token = await this.authService.login(req.user);
+    res.cookie('jwt', token.access_token, { httpOnly: true });
+    return res.send(token);
   }
+
   @Post('auth/signup')
   async signUp(@Body() user: CreateUtilisateurDto) {
     return this.authService.signUp(user);
   }
 
-  @Roles('jeune', 'administrateur')
+  @Roles(RolesEnum.conseiller)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
+  }
+  @Post('auth/logout')
+  async logout(@Res() res) {
+    res.clearCookie('jwt');
+    return res.send({ message: 'Logout' });
   }
 }

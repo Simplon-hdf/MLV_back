@@ -33,7 +33,9 @@ describe('ImagesService', () => {
   describe('remove', () => {
     it('should return a string message with the image id', () => {
       const id = 123;
-      expect(service.remove(id)).toEqual(`This action removes a #${id} image`);
+      expect(service.remove('id')).toEqual(
+        `This action removes a #${id} image`,
+      );
     });
   });
 });

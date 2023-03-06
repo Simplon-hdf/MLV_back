@@ -6,8 +6,8 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -23,7 +23,7 @@ import { RolesEnum } from '../enum/roles.enum';
 export class ArticleController {
   constructor(private articleService: ArticleService) {}
 
-  @Roles('conseiller', 'moderateur', 'administrateur')
+  @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create-article')
   @ApiQuery({ name: 'role', enum: RolesEnum })
@@ -39,7 +39,7 @@ export class ArticleController {
     return this.articleService.findAll();
   }
 
-  @Roles('conseiller', 'moderateur', 'administrateur')
+  @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
@@ -50,7 +50,7 @@ export class ArticleController {
     return this.articleService.findOne(+id);
   }
 
-  @Roles('conseiller', 'moderateur', 'administrateur')
+  @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
@@ -62,7 +62,7 @@ export class ArticleController {
     return this.articleService.updateArticle(+id, updateArticleDto);
   }
 
-  @Roles('conseiller', 'moderateur', 'administrateur')
+  @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })

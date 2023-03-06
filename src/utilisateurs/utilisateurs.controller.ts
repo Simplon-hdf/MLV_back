@@ -1,11 +1,12 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { UtilisateursService } from './utilisateurs.service';
@@ -16,32 +17,33 @@ import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { Roles } from '../auth/roles/roles.decorator';
 import { ApiTags } from '@nestjs/swagger';
+import { RolesEnum } from '../enum/roles.enum';
 
 @Controller('utilisateurs')
 @ApiTags('Utilisateurs')
 export class UtilisateursController {
   constructor(private readonly utilisateursService: UtilisateursService) {}
 
-  @Roles('conseiller', 'moderateur', 'administrateur')
+  @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
   create(@Body() createUtilisateurDto: CreateUtilisateurDto) {
     return this.utilisateursService.createUtilisateur(createUtilisateurDto);
   }
 
-  @Roles('moderateur', 'administrateur')
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get()
   findAll() {
     return this.utilisateursService.findAll();
   }
-  @Roles('moderateur', 'administrateur')
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.utilisateursService.findOne(+id);
   }
-  @Roles('moderateur', 'administrateur')
+  @SetMetadata('roles', ['conseiller'])
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
   update(
@@ -50,14 +52,14 @@ export class UtilisateursController {
   ) {
     return this.utilisateursService.update(+id, updateUtilisateurDto);
   }
-  @Roles('administrateur')
+  @Roles(RolesEnum.administrateur, RolesEnum.moderateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.utilisateursService.remove(+id);
   }
 
-  @Roles('jeune', 'moderateur', 'administrateur')
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id/change_password')
   changePassword(
@@ -67,7 +69,7 @@ export class UtilisateursController {
     return this.utilisateursService.updatePassword(+id, updateUtilisateurDto);
   }
   //find by email
-  @Roles('moderateur', 'administrateur')
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('email/:email')
   findByEmail(@Param('email') email: string) {

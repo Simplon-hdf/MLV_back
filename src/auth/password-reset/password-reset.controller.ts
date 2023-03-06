@@ -13,9 +13,10 @@ import { PasswordResetService } from './password-reset.service';
 import { passwordForgotDto } from '../dto/password-forgot.dto';
 import { passwordResetDto } from '../dto/password-reset.dto';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
-import { RoleGuard } from '../role/role.guard';
 import { Roles } from '../roles/roles.decorator';
 import { ApiTags } from '@nestjs/swagger';
+import { RoleGuard } from '../role/role.guard';
+import { RolesEnum } from '../../enum/roles.enum';
 
 @Controller('password-reset')
 @ApiTags('Password-reset')
@@ -26,7 +27,8 @@ export class PasswordResetController {
     private readonly mailService: MailService,
     private readonly jwtService: JwtService,
   ) {}
-  @Roles('jeune')
+
+  @Roles(RolesEnum.jeune)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('/forgot-password')
   async forgotPassword(@Body() dto: passwordForgotDto) {
@@ -62,7 +64,7 @@ export class PasswordResetController {
 
     // Envoyez un e-mail avec le jeton
   }
-  @Roles('jeune')
+  @Roles(RolesEnum.jeune)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('/reset-password')
   async resetPassword(@Body() body: passwordResetDto): Promise<void> {

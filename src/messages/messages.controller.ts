@@ -11,9 +11,7 @@ import {
 import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
-import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { JwtService } from '@nestjs/jwt';
-import { ApiBearerAuth } from '@nestjs/swagger';
 @Controller('messages')
 export class MessagesController {
   constructor(

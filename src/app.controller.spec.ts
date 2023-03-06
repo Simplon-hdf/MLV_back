@@ -22,7 +22,7 @@ describe('AppController', () => {
   describe('login', () => {
     it('should return access token', async () => {
       const req = { user: { id: 1, email: 'test@example.com' } };
-      const result = await controller.login(req);
+      const result = await controller.login(req, { cookie: jest.fn() });
       expect(authService.login).toHaveBeenCalledWith(req.user);
       expect(result).toEqual({ access_token: 'test_token' });
     });
