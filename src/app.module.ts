@@ -9,7 +9,7 @@ import { ArticleModule } from './article/article.module';
 
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
-import { ImagesModule } from './images/images.module';
+import { MessagesService } from './messages/messages.service';
 
 @Module({
   imports: [
@@ -21,9 +21,8 @@ import { ImagesModule } from './images/images.module';
     PagesModule,
     AuthModule,
     MailModule,
-    ImagesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, MessagesService],
 })
 export class AppModule {}

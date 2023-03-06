@@ -134,22 +134,35 @@ enum role {
 }
 
 model utilisateur {
-  id             Int             @id @unique @default(autoincrement())
-  uuid           String          @unique @db.VarChar(50)
-  email          String          @unique @db.VarChar(50)
-  nom            String          @db.VarChar(50)
-  prenom         String          @db.VarChar(50)
-  date_naissance DateTime        @db.Date
-  mot_de_passe   String          @db.VarChar(250)
-  telephone      String          @db.VarChar(50)
-  nationalite    String          @db.VarChar(50)
-  adresse        String          @db.VarChar(50)
-  role           role            @default(jeune)
-  administrateur administrateur?
-  conseiller     conseiller?
-  gere           gere[]
-  jeune          jeune?
-  moderateur     moderateur?
+  id               Int             @id @unique @default(autoincrement())
+  uuid             String          @unique @db.VarChar(50)
+  email            String          @unique @db.VarChar(50)
+  nom              String          @db.VarChar(50)
+  prenom           String          @db.VarChar(50)
+  date_naissance   DateTime        @db.Date
+  mot_de_passe     String          @db.VarChar(250)
+  telephone        String          @db.VarChar(50)
+  nationalite      String          @db.VarChar(50)
+  adresse          String          @db.VarChar(50)
+  role             role            @default(jeune)
+  administrateur   administrateur?
+  conseiller       conseiller?
+  gere             gere[]
+  jeune            jeune?
+  moderateur       moderateur?
+  sentMessages     message[]       @relation("sender")
+  receivedMessages message[]       @relation("receiver")
+}
+
+model message {
+  id         Int         @id @default(autoincrement())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  content    String
+  sender     utilisateur @relation("sender", fields: [senderId], references: [id])
+  senderId   Int
+  receiver   utilisateur @relation("receiver", fields: [receiverId], references: [id])
+  receiverId Int
 }
 
 model password_reset {
