@@ -4,7 +4,6 @@ import { createWriteStream } from 'fs';
 import * as sharp from 'sharp';
 import * as path from 'path';
 import * as fs from 'fs';
-import { loadTsconfig } from 'tsconfig-paths/lib/tsconfig-loader';
 
 @Injectable()
 export class ImagesService {
@@ -25,29 +24,7 @@ export class ImagesService {
     writeStream.write(compressedImage);
     return compressedImage;
   }
-
-  /*remove(filename) {
-    fs.unlink('../res/public/images/' + filename); // externaliser le chemin.
-    console.log('delete call debug -> service');
-  }*/
-
-  private readonly imagePath = './res/public/images/'; // Chemin d'accès au répertoire contenant les images
-
-  /*async remove(filename: string): Promise<string> {
-    const filePath = path.join(this.imagePath, filename);
-
-    try {
-      // Vérifie si le fichier existe avant de le supprimer
-      await fs.promises.access(filePath, fs.constants.F_OK);
-      await fs.promises.unlink(filePath);
-      console.log(fs.promises);
-      return filename;
-    } catch (err) {
-      // Si le fichier n'existe pas, renvoie undefined
-      return undefined;
-    }
-  }*/
-
+  private readonly imagePath = './res/public/images/';
   async remove(filename: string): Promise<string> {
     const filePath = path.join(this.imagePath, filename);
 

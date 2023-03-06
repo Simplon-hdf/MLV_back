@@ -70,7 +70,7 @@ export class ImagesController {
 
     // Return the image file name and path
     return {
-      originalFilename: file.originalname,
+      //originalFilename: file.originalname,
       compressedFilename: `${file.filename}`,
     };
   }
