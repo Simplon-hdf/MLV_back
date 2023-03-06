@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Query,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { ImagesService } from './images.service';
 import * as sharp from 'sharp';
@@ -22,6 +23,8 @@ import { extname } from 'path';
 import { ApiConsumes, ApiTags, ApiBody } from '@nestjs/swagger';
 import * as fs from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
+import { url } from 'inspector';
+import { Exception } from 'handlebars';
 
 @Controller('images')
 @ApiTags('Images')
@@ -76,21 +79,36 @@ export class ImagesController {
   }
   // get url of image or page
   async getUrlForDelete(imageUrl: string) {
-    const url = await this.imagesService.getUrl(imageUrl);
     // delete url with correct target
-    // si c'est une image d'article
 
-<<<<<<< HEAD
-=======
-    // supprimer l'url dans la table image
-    // sinon si c'est une image de page
-    // supprimer l'url dans la table page
+    const article = await this.prisma.post.findUnique({
+      where: {
+        url_img: imageUrl,
+      },
+    });
+    const page = await this.prisma.page.findUnique({
+      where: {
+        url_img: imageUrl,
+      },
+    });
+
+    if (article.url_img != imageUrl) {
+      article.url_img = '';
+    } else if (page.url_img != imageUrl) {
+      page.url_img = '';
+    } else {
+      throw new Exception('not found url');
+    }
   }
->>>>>>> feature/image/url
+  // si c'est une image d'article
+
+  // supprimer l'url dans la table image
+  // sinon si c'est une image de page
+  // supprimer l'url dans la table page
   @Delete('images/:filename')
   async delete(@Param('filename') filename: string) {
-    console.log('delete call debug -> controller');
     const image = await this.imagesService.remove(filename);
+    this.getUrlForDelete(filename);
     if (image === undefined) {
       throw new NotFoundException('Image does not exist!');
     }

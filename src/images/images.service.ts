@@ -1,13 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateImageDto } from './dto/create-image.dto';
 import { createWriteStream } from 'fs';
 import * as sharp from 'sharp';
 import * as path from 'path';
 import * as fs from 'fs';
-<<<<<<< HEAD
-=======
 import { PrismaService } from '../prisma/prisma.service';
->>>>>>> feature/image/url
 
 @Injectable()
 export class ImagesService {
@@ -24,26 +25,6 @@ export class ImagesService {
       .gif({ quality: 80 }) // compress GIF images
       .toFormat(format)
       .toBuffer();
-<<<<<<< HEAD
-
-    const writeStream = createWriteStream(filePath);
-    writeStream.write(compressedImage);
-    return compressedImage;
-  }
-  private readonly imagePath = './res/public/images/';
-  async remove(filename: string): Promise<string> {
-    const filePath = path.join(this.imagePath, filename);
-
-    return new Promise<string>((resolve, reject) => {
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          console.error(`Error deleting file: ${filePath}`, err);
-          return reject(err);
-        }
-        resolve(filename);
-      });
-    });
-=======
 
     const writeStream = createWriteStream(filePath);
     writeStream.write(compressedImage);
@@ -94,6 +75,14 @@ export class ImagesService {
     // add url in database
     data.url_img = url;
     return true;
->>>>>>> feature/image/url
+  }
+
+  async deleteUrl(imageURL: string): Promise<void> {
+    const filePath = path.join(this.imagePath, imageURL);
+    try {
+      await fs.promises.unlink(filePath);
+    } catch (error) {
+      throw new NotFoundException('Image not found');
+    }
   }
 }
