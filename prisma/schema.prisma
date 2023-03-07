@@ -19,6 +19,7 @@ model conseiller {
   id            Int             @id
   utilisateur   utilisateur     @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   est_attribuer est_attribuer[]
+  inscrit       inscrit[]
   redige        redige[]
 }
 
@@ -40,20 +41,20 @@ model gere {
   @@id([id_administrateur, id_utilisateur])
 }
 
-model inscrit {
-  id_jeune Int
-  id_post  Int
-  jeune    jeune @relation(fields: [id_jeune], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  post     post  @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@id([id_jeune, id_post])
-}
-
 model jeune {
   id            Int             @id
   est_attribuer est_attribuer[]
   inscrit       inscrit[]
   utilisateur   utilisateur     @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model inscrit {
+  id_jeune      Int
+  id_conseiller Int
+  conseiller    conseiller @relation(fields: [id_conseiller], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  jeune         jeune      @relation(fields: [id_jeune], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([id_jeune, id_conseiller])
 }
 
 model moderateur {
@@ -67,17 +68,17 @@ model peut_gerer {
   id_moderateur Int
   id_post       Int
   moderateur    moderateur @relation(fields: [id_moderateur], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  post          post       @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  article       article    @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([id_moderateur, id_post])
 }
 
-model post {
+model article {
   id               Int          @id @default(autoincrement())
   titre            String?      @db.VarChar(50)
   date_creation    DateTime?    @db.Date
   date_suppression DateTime?    @db.Date
-  url_img          String?      @db.VarChar(50)
+  url_img          String?      @db.VarChar(1245)
   img_description  String?      @db.VarChar(50)
   img_titre        String?      @db.VarChar(50)
   sous_titre       String?      @db.VarChar(50)
@@ -89,7 +90,6 @@ model post {
   slug             String?      @db.VarChar(50)
   tags             String?      @db.VarChar(50)
   status           String?      @db.VarChar(50)
-  inscrit          inscrit[]
   peut_gerer       peut_gerer[]
   redige           redige[]
 }
@@ -121,7 +121,7 @@ model redige {
   id_post       Int
   conseiller    conseiller @relation(fields: [id_conseiller], references: [id], onDelete: NoAction, onUpdate: NoAction)
   moderateur    moderateur @relation(fields: [id_moderateur], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  post          post       @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  article       article    @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([id_conseiller, id_moderateur, id_post])
 }
