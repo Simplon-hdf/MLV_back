@@ -43,8 +43,8 @@ model gere {
 model inscrit {
   id_jeune Int
   id_post  Int
-  jeune    jeune @relation(fields: [id_jeune], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  post     post  @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  jeune    jeune   @relation(fields: [id_jeune], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  post     article @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([id_jeune, id_post])
 }
@@ -67,12 +67,12 @@ model peut_gerer {
   id_moderateur Int
   id_post       Int
   moderateur    moderateur @relation(fields: [id_moderateur], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  post          post       @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  post          article    @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([id_moderateur, id_post])
 }
 
-model post {
+model article {
   id               Int          @id @default(autoincrement())
   titre            String?      @db.VarChar(50)
   date_creation    DateTime?    @db.Date
@@ -121,7 +121,7 @@ model redige {
   id_post       Int
   conseiller    conseiller @relation(fields: [id_conseiller], references: [id], onDelete: NoAction, onUpdate: NoAction)
   moderateur    moderateur @relation(fields: [id_moderateur], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  post          post       @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  post          article    @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([id_conseiller, id_moderateur, id_post])
 }

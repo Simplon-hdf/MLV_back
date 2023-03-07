@@ -54,7 +54,7 @@ export class ImagesService {
   }
 
   async getForDelete(imageUrl?: undefined): Promise<any> {
-    const article = await this.prisma.post.findFirst({
+    const article = await this.prisma.article.findFirst({
       where: { url_img: imageUrl },
     });
     const page = await this.prisma.page.findFirst({
@@ -73,7 +73,7 @@ export class ImagesService {
   // verify if image or page at params exist
   async verifyImageOrPageExist(id: number, element: string): Promise<any> {
     if (element == 'article') {
-      const article = await this.prisma.post.findUnique({
+      const article = await this.prisma.article.findUnique({
         where: { id: id },
       });
       if (article === null) {
