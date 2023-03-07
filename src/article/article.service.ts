@@ -1,44 +1,39 @@
-import { Injectable } from '@nestjs/common';
-import { post } from '@prisma/client';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { Article } from './entities/article.entity';
+import { article } from '@prisma/client';
 
 @Injectable()
 export class ArticleService {
   constructor(private prisma: PrismaService) {}
 
-  createArticle(createArticleDto: CreateArticleDto) {
-    createArticleDto.date_creation = new Date();
-    return this.prisma.post.create({
+  createArticle(createArticleDto: CreateArticleDto): Promise<article> {
+    return this.prisma.article.create({
       data: createArticleDto,
     });
   }
-
-  findAll() {
-    return this.prisma.post.findMany();
-  }
-
-  findOne(id: number) {
-    return this.prisma.post.findUnique({
-      select: { id: true },
-      where: { id },
+  updateArticle(
+    id: number,
+    updateArticleDto: UpdateArticleDto,
+  ): Promise<article> {
+    return this.prisma.article.update({
+      where: { id: id },
+      data: updateArticleDto,
     });
   }
 
-  updateArticle(id: number, updateArticleDto: UpdateArticleDto) {
-    return this.prisma.post.update({
-      where: { id },
-      data: {
-        ...updateArticleDto,
-      },
+  findOne(id: number): Promise<article> {
+    return this.prisma.article.findUnique({
+      where: { id: id },
     });
   }
-
-  remove(id: number) {
-    return this.prisma.post.delete({
-      where: { id },
+  findAll(): Promise<article[]> {
+    return this.prisma.article.findMany();
+  }
+  remove(id: number): Promise<article> {
+    return this.prisma.article.delete({
+      where: { id: id },
     });
   }
 }

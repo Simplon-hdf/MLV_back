@@ -8,7 +8,6 @@ import { createWriteStream } from 'fs';
 import * as sharp from 'sharp';
 import * as path from 'path';
 import { PrismaService } from '../prisma/prisma.service';
-import { Exception } from 'handlebars';
 
 @Injectable()
 export class ImagesService {
@@ -33,7 +32,6 @@ export class ImagesService {
     writeStream.write(compressedImage);
     return compressedImage;
   }
-
   async remove(filename: string): Promise<string> {
     const filePath = path.join(this.imagePath, filename);
 
@@ -53,27 +51,10 @@ export class ImagesService {
     return `./res/public/images/${imageUrl}`;
   }
 
-  async getForDelete(imageUrl?: undefined): Promise<any> {
-    const article = await this.prisma.post.findFirst({
-      where: { url_img: imageUrl },
-    });
-    const page = await this.prisma.page.findFirst({
-      where: { url_img: imageUrl },
-    });
-
-    if (article.url_img != imageUrl) {
-      article.url_img = '';
-    } else if (page.url_img != imageUrl) {
-      page.url_img = '';
-    } else {
-      throw new Exception('not found url');
-    }
-  }
-
   // verify if image or page at params exist
   async verifyImageOrPageExist(id: number, element: string): Promise<any> {
     if (element == 'article') {
-      const article = await this.prisma.post.findUnique({
+      const article = await this.prisma.article.findUnique({
         where: { id: id },
       });
       if (article === null) {
@@ -106,5 +87,9 @@ export class ImagesService {
     } catch (error) {
       throw new NotFoundException('Image not found');
     }
+  }
+
+  async getForDelete(imageUrl) {
+    return await this.deleteUrl(imageUrl);
   }
 }
