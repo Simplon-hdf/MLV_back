@@ -3,18 +3,21 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateImageDto } from './dto/create-image.dto';
+import * as fs from 'fs';
 import { createWriteStream } from 'fs';
 import * as sharp from 'sharp';
 import * as path from 'path';
-import * as fs from 'fs';
 import { PrismaService } from '../prisma/prisma.service';
+import { Exception } from 'handlebars';
 
 @Injectable()
 export class ImagesService {
+  private readonly imagePath = './res/public/images/';
+
   constructor(private prisma: PrismaService) {}
+
   // compress images
-  async compressImage(file: Express.Multer.File, format: string = 'jpg') {
+  async compressImage(file: Express.Multer.File, format = 'jpg') {
     console.log('compress call debug');
     const baseDir = './res/public/images/';
     const filePath = path.join(baseDir, file.filename);
@@ -30,7 +33,7 @@ export class ImagesService {
     writeStream.write(compressedImage);
     return compressedImage;
   }
-  private readonly imagePath = './res/public/images/';
+
   async remove(filename: string): Promise<string> {
     const filePath = path.join(this.imagePath, filename);
 
@@ -44,9 +47,27 @@ export class ImagesService {
       });
     });
   }
+
   // private method
   async getUrl(imageUrl: string) {
     return `./res/public/images/${imageUrl}`;
+  }
+
+  async getForDelete(imageUrl?: undefined): Promise<any> {
+    const article = await this.prisma.post.findFirst({
+      where: { url_img: imageUrl },
+    });
+    const page = await this.prisma.page.findFirst({
+      where: { url_img: imageUrl },
+    });
+
+    if (article.url_img != imageUrl) {
+      article.url_img = '';
+    } else if (page.url_img != imageUrl) {
+      page.url_img = '';
+    } else {
+      throw new Exception('not found url');
+    }
   }
 
   // verify if image or page at params exist
@@ -69,6 +90,7 @@ export class ImagesService {
       return page;
     }
   }
+
   async stockUrl(imageUrl: string, element: string, id: number): Promise<any> {
     const url = await this.getUrl(imageUrl);
     const data = await this.verifyImageOrPageExist(id, element);

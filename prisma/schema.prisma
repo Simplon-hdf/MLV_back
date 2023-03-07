@@ -97,7 +97,7 @@ model post {
 model page {
   id               Int             @id @default(autoincrement())
   contenu          String?
-  url_img          String?         @db.VarChar(50)
+  url_img          String?         @unique @db.VarChar(50)
   url_video        String?         @db.VarChar(50)
   meta_title       String?         @db.VarChar(50)
   tags             String?         @db.VarChar(50)
