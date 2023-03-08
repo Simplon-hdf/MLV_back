@@ -77,7 +77,7 @@ model post {
   titre            String?      @db.VarChar(50)
   date_creation    DateTime?    @db.Date
   date_suppression DateTime?    @db.Date
-  url_img          String?      @db.VarChar(50)
+  url_img          String?      @db.VarChar(250)
   img_description  String?      @db.VarChar(50)
   img_titre        String?      @db.VarChar(50)
   sous_titre       String?      @db.VarChar(50)
