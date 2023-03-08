@@ -6,8 +6,8 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -24,7 +24,7 @@ export class ArticleController {
   constructor(private articleService: ArticleService) {}
 
   @Roles('conseiller', 'moderateur', 'administrateur')
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  // @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create-article')
   @ApiQuery({ name: 'role', enum: RolesEnum })
   async create(

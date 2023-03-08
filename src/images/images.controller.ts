@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   NotFoundException,
   Param,
   Post,
@@ -58,7 +59,11 @@ export class ImagesController {
   async uploadImage(@UploadedFile() file) {
     // Resizing image to 300x300 using sharp module
     await this.imagesService.compressImage(file, 'jpg'); // Do something with the image (e.g. save it to the database, etc.)
-
+    if ((await this.imagesService.stockUrl(file.filename, 1)) === undefined) {
+      throw new NotFoundException(
+        'Error: uploadImage() => Image does not exist!, stock url failed!',
+      );
+    }
     // Return the image file name and path
     return {
       //originalFilename: file.originalname,
@@ -72,15 +77,12 @@ export class ImagesController {
     await this.imagesService.getForDelete(imageUrl);
   }
 
+  @Delete(':filename')
   async delete(@Param('filename') filename: string) {
     const image = await this.imagesService.remove(filename);
     await this.getUrlForDelete(filename);
     if (image === undefined) {
       throw new NotFoundException('Image does not exist!');
     }
-  }
-
-  async saveUrl(imageUrl: string, element: string, id: number) {
-    const url = await this.imagesService.stockUrl(imageUrl, element, id);
   }
 }
