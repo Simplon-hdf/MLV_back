@@ -59,12 +59,9 @@ export class ImagesController {
   async uploadImage(@UploadedFile() file) {
     // Resizing image to 300x300 using sharp module
     await this.imagesService.compressImage(file, 'jpg'); // Do something with the image (e.g. save it to the database, etc.)
-    if ((await this.imagesService.stockUrl(file.filename, 1)) === undefined) {
-      throw new NotFoundException(
-        'Error: uploadImage() => Image does not exist!, stock url failed!',
-      );
-    }
+    await this.imagesService.stockUrl(file.filename, 1);
     // Return the image file name and path
+    console.log('upload call debug');
     return {
       //originalFilename: file.originalname,
       compressedFilename: `${file.filename}`,

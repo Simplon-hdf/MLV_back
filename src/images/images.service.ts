@@ -60,12 +60,51 @@ export class ImagesService {
     }
   }
 
+  // async stockUrl(imageUrl: string, id: number): Promise<boolean> {
+  //   const url = await this.getUrl(imageUrl);
+  //   this.prisma.post.update({
+  //     where: { id: id },
+  //     data: { url_img: url },
+  //   });
+  //   console.log('stockUrl: ' + url + ' id: ' + id + ' debug');
+  //   console.log('id:' + this.prisma.post.findUnique({ where: { id: id } }));
+  //   console.log(
+  //     'data:' +
+  //       this.prisma.post.findFirst({ where: {}, data: { url_img: url } }),
+  //   );
+  //   return true;
+  // }
+
   async stockUrl(imageUrl: string, id: number): Promise<boolean> {
     const url = await this.getUrl(imageUrl);
+    console.log(
+      'before id:' +
+        JSON.stringify(
+          await this.prisma.post.findUnique({ where: { id: id } }),
+        ),
+    );
+    console.log(
+      'before data:' +
+        JSON.stringify(
+          await this.prisma.post.findFirst({ where: { url_img: url } }),
+        ),
+    );
     this.prisma.post.update({
       where: { id: id },
       data: { url_img: url },
     });
+    console.log(
+      'after id:' +
+        JSON.stringify(
+          await this.prisma.post.findUnique({ where: { id: id } }),
+        ),
+    );
+    console.log(
+      'after data:' +
+        JSON.stringify(
+          await this.prisma.post.findFirst({ where: { url_img: url } }),
+        ),
+    );
     return true;
   }
 
