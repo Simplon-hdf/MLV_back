@@ -18,7 +18,7 @@ import { PrismaService } from '../prisma/prisma.service';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '6000000000s' },
+      signOptions: { expiresIn: '1h' },
     }),
   ],
   providers: [

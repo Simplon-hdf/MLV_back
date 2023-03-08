@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common';
 import { ImagesService } from './images.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { ApiConsumes, ApiTags, ApiBody } from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
 
 @Controller('images')
@@ -38,7 +38,7 @@ export class ImagesController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './res/public/images',
+        destination: './res/public/images', // externaliser le chemin.
         filename: (req, file, cb) => {
           const randomName = uuidv4(); //Array(32)
           cb(null, `${randomName}${extname(file.originalname)}`);
@@ -72,9 +72,10 @@ export class ImagesController {
     await this.imagesService.getForDelete(imageUrl);
   }
 
+  @Post('delete/:filename')
   async delete(@Param('filename') filename: string) {
     const image = await this.imagesService.remove(filename);
-    await this.getUrlForDelete(filename);
+
     if (image === undefined) {
       throw new NotFoundException('Image does not exist!');
     }
