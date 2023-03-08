@@ -1,23 +1,37 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { RolesEnum } from '../../enum/roles.enum';
+import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from '../constants/auth.constants';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
-
-  matchRoles(roles: string[], userRole: string) {
-    return roles.some((role) => role === userRole);
-  }
+  constructor(
+    private reflector: Reflector,
+    private readonly jwtService: JwtService,
+  ) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.get<string[]>('roles', context.getHandler());
-    console.log(roles);
-    if (!roles) {
+    const requiredRoles = this.reflector.getAllAndOverride<RolesEnum[]>(
+      'roles',
+      [context.getHandler(), context.getClass()],
+    );
+    console.log(requiredRoles);
+    if (!requiredRoles) {
       return true;
     }
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
-    console.log(user);
-    return this.matchRoles(roles, user.role);
+    const authHeader = request.headers.cookie.split('=')[1];
+    if (!authHeader) {
+      return false;
+    }
+    console.log('authHeader', authHeader);
+    const user = this.jwtService.verify(authHeader, {
+      secret: jwtConstants.secret,
+    });
+
+    console.log('token', user);
+    console.log(user.role);
+    return requiredRoles.some((role) => user.role?.includes(role));
   }
 }

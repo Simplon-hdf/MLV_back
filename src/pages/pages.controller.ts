@@ -1,13 +1,13 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
+  Get,
+  Param,
+  Patch,
+  Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { CreatePageDto } from './dto/create-page.dto';
@@ -15,8 +15,7 @@ import { UpdatePageDto } from './dto/update-page.dto';
 import { Roles } from '../auth/roles/roles.decorator';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { RoleGuard } from '../auth/role/role.guard';
-import { ApiTags } from '@nestjs/swagger';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { RolesEnum } from '../enum/roles.enum';
 
 @Controller('pages')
@@ -24,7 +23,7 @@ import { RolesEnum } from '../enum/roles.enum';
 export class PagesController {
   constructor(private readonly pagesService: PagesService) {}
 
-  @Roles('moderateur', 'administrateur')
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
   @ApiQuery({ name: 'role', enum: RolesEnum })
@@ -45,7 +44,7 @@ export class PagesController {
     return this.pagesService.findOne(+id);
   }
 
-  @Roles('moderateur', 'administrateur')
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
@@ -57,7 +56,7 @@ export class PagesController {
     return this.pagesService.update(+id, updatePageDto);
   }
 
-  @Roles('moderateur', 'administrateur')
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
