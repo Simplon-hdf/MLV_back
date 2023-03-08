@@ -13,8 +13,7 @@ import { LocalAuthGuard } from './auth/guard/local-auth.guard';
 import { ApiBody } from '@nestjs/swagger';
 import { LoginDto } from './auth/dto/login.dto';
 import { CreateUtilisateurDto } from './utilisateurs/dto/create-utilisateur.dto';
-import { MailService } from './mail/mail.service';
-import { PrismaService } from './prisma/prisma.service';
+
 import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
 import { Roles } from './auth/roles/roles.decorator';
 import { RoleGuard } from './auth/role/role.guard';
@@ -22,11 +21,7 @@ import { RolesEnum } from './enum/roles.enum';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly mailService: MailService,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')

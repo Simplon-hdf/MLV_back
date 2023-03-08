@@ -23,7 +23,7 @@ import { RolesEnum } from '../enum/roles.enum';
 export class PagesController {
   constructor(private readonly pagesService: PagesService) {}
 
-  @Roles(RolesEnum.administrateur, RolesEnum.moderateur)
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
   @ApiQuery({ name: 'role', enum: RolesEnum })
@@ -44,7 +44,7 @@ export class PagesController {
     return this.pagesService.findOne(+id);
   }
 
-  @Roles(RolesEnum.administrateur, RolesEnum.moderateur)
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
@@ -56,7 +56,7 @@ export class PagesController {
     return this.pagesService.update(+id, updatePageDto);
   }
 
-  @Roles(RolesEnum.administrateur, RolesEnum.moderateur)
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
