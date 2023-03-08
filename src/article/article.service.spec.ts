@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleService } from './article.service';
-import { PrismaClient, post } from '.prisma/client';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { article } from '@prisma/client';
 
 describe('ArticleService', () => {
   let service: ArticleService;
@@ -23,7 +23,7 @@ describe('ArticleService', () => {
   });
 
   afterEach(async () => {
-    await prisma.post.deleteMany();
+    await prisma.article.deleteMany();
   });
 
   // test create
@@ -46,14 +46,16 @@ describe('ArticleService', () => {
         tags: 'Test tag',
         status: 'published',
       };
-      const createdArticle: post = await service.createArticle(
+      const createdArticle: article = await service.createArticle(
         createArticleDto,
       );
 
-      jest.spyOn(prisma.post, 'create').mockResolvedValueOnce(createdArticle);
+      jest
+        .spyOn(prisma.article, 'create')
+        .mockResolvedValueOnce(createdArticle);
 
-      const result = await prisma.post.create({ data: createArticleDto });
-      expect(prisma.post.create).toHaveBeenCalledWith({
+      const result = await prisma.article.create({ data: createArticleDto });
+      expect(prisma.article.create).toHaveBeenCalledWith({
         data: createArticleDto,
       });
       expect(result).toEqual(createdArticle);

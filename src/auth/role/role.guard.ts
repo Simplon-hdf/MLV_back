@@ -3,7 +3,6 @@ import { Reflector } from '@nestjs/core';
 import { RolesEnum } from '../../enum/roles.enum';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '../constants/auth.constants';
-import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
