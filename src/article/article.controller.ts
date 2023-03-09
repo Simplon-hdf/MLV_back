@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -24,7 +25,7 @@ export class ArticleController {
   constructor(private articleService: ArticleService) {}
 
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  //@UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create-article')
   @ApiQuery({ name: 'role', enum: RolesEnum })
   async create(
@@ -40,7 +41,7 @@ export class ArticleController {
   }
 
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  //  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
   async findOne(
@@ -51,7 +52,7 @@ export class ArticleController {
   }
 
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  //@UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
   async update(

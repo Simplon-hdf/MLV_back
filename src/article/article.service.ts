@@ -1,7 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
 import { article } from '@prisma/client';
 
 @Injectable()
@@ -13,13 +12,11 @@ export class ArticleService {
       data: createArticleDto,
     });
   }
-  updateArticle(
-    id: number,
-    updateArticleDto: UpdateArticleDto,
-  ): Promise<article> {
+
+  async updateArticle(id: number, data: any) {
     return this.prisma.article.update({
       where: { id: id },
-      data: updateArticleDto,
+      data: data,
     });
   }
 
@@ -28,9 +25,18 @@ export class ArticleService {
       where: { id: id },
     });
   }
+
+  async updateArticleImg_url(id: number, img_url: string): Promise<article> {
+    return this.prisma.article.update({
+      where: { id: id },
+      data: { url_img: img_url },
+    });
+  }
+
   findAll(): Promise<article[]> {
     return this.prisma.article.findMany();
   }
+
   remove(id: number): Promise<article> {
     return this.prisma.article.delete({
       where: { id: id },

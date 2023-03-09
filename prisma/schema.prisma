@@ -78,7 +78,7 @@ model article {
   titre            String?      @db.VarChar(50)
   date_creation    DateTime?    @db.Date
   date_suppression DateTime?    @db.Date
-  url_img          String?      @db.VarChar(1245)
+  url_img          String?      @unique @db.VarChar(1245)
   img_description  String?      @db.VarChar(50)
   img_titre        String?      @db.VarChar(50)
   sous_titre       String?      @db.VarChar(50)
@@ -97,7 +97,7 @@ model article {
 model page {
   id               Int             @id @default(autoincrement())
   contenu          String?
-  url_img          String?         @unique @db.VarChar(50)
+  url_img          String?         @db.VarChar(50)
   url_video        String?         @db.VarChar(50)
   meta_title       String?         @db.VarChar(50)
   tags             String?         @db.VarChar(50)
