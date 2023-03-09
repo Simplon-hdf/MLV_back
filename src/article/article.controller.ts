@@ -8,7 +8,6 @@ import {
   Post,
   UseGuards,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -64,7 +63,7 @@ export class ArticleController {
   }
 
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  // @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
   async remove(
