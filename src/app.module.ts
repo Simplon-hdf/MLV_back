@@ -11,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MessagesModule } from './messages/messages.module';
 import { ImagesModule } from './images/images.module';
+import { AlertModule } from './alert/alert.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ImagesModule } from './images/images.module';
     MailModule,
     MessagesModule,
     ImagesModule,
+    AlertModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
