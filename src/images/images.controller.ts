@@ -11,7 +11,7 @@ import { ImagesService } from './images.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { ApiConsumes, ApiTags, ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
 
 @Controller('images')
@@ -74,11 +74,7 @@ export class ImagesController {
     await this.imagesService.getForDelete(imageUrl);
   }
 
-<<<<<<< HEAD
-  @Post('delete/:filename')
-=======
   @Delete(':filename')
->>>>>>> feature/delete/image
   async delete(@Param('filename') filename: string) {
     const image = await this.imagesService.remove(filename);
 
