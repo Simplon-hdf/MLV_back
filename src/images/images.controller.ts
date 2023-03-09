@@ -41,6 +41,7 @@ export class ImagesController {
         destination: './res/public/images', // externaliser le chemin.
         filename: (req, file, cb) => {
           const randomName = uuidv4(); //Array(32)
+          console.log('debug filename', randomName, extname(file.originalname));
           cb(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
@@ -60,7 +61,6 @@ export class ImagesController {
     await this.imagesService.compressImage(file, 'jpg'); // Do something with the image (e.g. save it to the database, etc.)
     await this.imagesService.stockUrl(file.filename, 'article', 2);
     // Return the image file name and path
-    console.log('upload call debug');
     return {
       //originalFilename: file.originalname,
       compressedFilename: `${file.filename}`,

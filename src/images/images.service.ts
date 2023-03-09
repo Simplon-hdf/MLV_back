@@ -21,6 +21,10 @@ export class ImagesService {
   async compressImage(file: Express.Multer.File, format = 'jpg') {
     console.log('compress call debug');
     const baseDir = './res/public/images/';
+    // stocker le nom de l'image dans la base de données
+    // avec un systeme de designation de l'image
+    // garder le nom original de l'image, pour l'ajouter
+    // dans la section assignation.
     const filePath = path.join(baseDir, file.filename);
     const compressedImage = await sharp(file.path)
       .resize({ width: 200, height: 200 })
@@ -36,6 +40,8 @@ export class ImagesService {
   }
 
   async remove(filename: string): Promise<string> {
+    // rechercher le nom de l'image dans la base de données
+    // avec un systeme de designation de l'image
     const filePath = path.join(this.imagePath, filename);
     const article = await this.prisma.article.update({
       where: { url_img: await this.getUrl(filename) },
