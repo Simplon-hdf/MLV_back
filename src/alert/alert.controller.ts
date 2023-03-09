@@ -3,13 +3,15 @@ import { AlertService } from './alert.service';
 import { CreateAlertDto } from './dto/create-alert.dto';
 import { UpdateAlertDto } from './dto/update-alert.dto';
 import { alert } from '@prisma/client';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 @Controller('alert')
+@ApiTags('Alert')
 export class AlertController {
   constructor(private readonly alertService: AlertService) {}
 
   @Post()
-  create(@Body() data: alert): Promise<alert> {
-    return this.alertService.create(data);
+  create(@Body() createAlertDto: CreateAlertDto) {
+    return this.alertService.createAlert(createAlertDto);
   }
 
   @Get('alerts')

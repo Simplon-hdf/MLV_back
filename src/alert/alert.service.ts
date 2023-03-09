@@ -20,7 +20,7 @@ export class AlertService {
     return this.prisma.alert.delete({ where: { id } });
   }
 
-  async create(data: alert): Promise<alert> {
-    return this.prisma.alert.create({ data });
+  async createAlert(data: CreateAlertDto): Promise<alert> {
+    return this.prisma.alert.create({ data: data });
   }
 }
