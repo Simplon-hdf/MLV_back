@@ -24,13 +24,8 @@ import { RolesEnum } from '../enum/roles.enum';
 export class ArticleController {
   constructor(private articleService: ArticleService) {}
 
-<<<<<<< HEAD
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
-  @UseGuards(JwtAuthGuard, RoleGuard)
-=======
-  @Roles('conseiller', 'moderateur', 'administrateur')
-  // @UseGuards(JwtAuthGuard, RoleGuard)
->>>>>>> feature/delete/image
+  //@UseGuards(JwtAuthGuard, RoleGuard)
   @Post('create-article')
   @ApiQuery({ name: 'role', enum: RolesEnum })
   async create(
@@ -46,7 +41,7 @@ export class ArticleController {
   }
 
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  //  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
   async findOne(
@@ -57,7 +52,7 @@ export class ArticleController {
   }
 
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  //@UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
   @ApiQuery({ name: 'role', enum: RolesEnum })
   async update(
