@@ -42,6 +42,8 @@ export class ImagesController {
         filename: (req, file, cb) => {
           const randomName = uuidv4(); //Array(32)
           cb(null, `${randomName}${extname(file.originalname)}`);
+          // Penser a rajouter la modification du nom de l'image
+          // pour mieux récupérer l'image dans la base de données.
         },
       }),
       fileFilter: (req, file, cb) => {
