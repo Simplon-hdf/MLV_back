@@ -17,10 +17,14 @@ import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
 import { Roles } from './auth/roles/roles.decorator';
 import { RoleGuard } from './auth/role/role.guard';
 import { RolesEnum } from './enum/roles.enum';
+import { VisitorCounterMiddleware } from './visitor/visitorCountMiddleware.middleware';
 
 @Controller()
 export class AppController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly visitor: VisitorCounterMiddleware,
+    private readonly authService: AuthService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
@@ -50,5 +54,10 @@ export class AppController {
   async logout(@Res() res) {
     res.clearCookie('jwt');
     return res.send({ message: 'Logout' });
+  }
+
+  @Get()
+  index(@Request() req) {
+    return this.visitor.use;
   }
 }

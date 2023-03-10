@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UtilisateursModule } from './utilisateurs/utilisateurs.module';
@@ -12,6 +12,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MessagesModule } from './messages/messages.module';
 import { ImagesModule } from './images/images.module';
 import { AlertModule } from './alert/alert.module';
+import { VisitorCounterMiddleware } from './visitor/visitorCountMiddleware.middleware';
 
 @Module({
   imports: [
@@ -29,6 +30,10 @@ import { AlertModule } from './alert/alert.module';
     AlertModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [PrismaService, AppService, VisitorCounterMiddleware],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(VisitorCounterMiddleware).forRoutes('*');
+  }
+}
