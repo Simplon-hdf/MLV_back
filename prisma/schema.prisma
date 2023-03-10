@@ -171,3 +171,8 @@ model password_reset {
   token     String   @unique
   createdAt DateTime @default(now())
 }
+
+model visitor {
+  id     Int @id @default(autoincrement())
+  visits Int @default(0)
+}
