@@ -1,34 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { VisitorService } from './visitor.service';
-import { CreateVisitorDto } from './dto/create-visitor.dto';
-import { UpdateVisitorDto } from './dto/update-visitor.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('visitor')
+@ApiTags('Visitor')
 export class VisitorController {
-  constructor(private readonly visitorService: VisitorService) {}
+  constructor(private visitorService: VisitorService) {}
 
-  @Post()
-  create(@Body() createVisitorDto: CreateVisitorDto) {
-    return this.visitorService.create(createVisitorDto);
-  }
+  // @Post()
+  // create(app) {
+  //   return this.visitorService.incrementation(app);
+  // }
 
-  @Get()
-  findAll() {
-    return this.visitorService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.visitorService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVisitorDto: UpdateVisitorDto) {
-    return this.visitorService.update(+id, updateVisitorDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.visitorService.remove(+id);
+  @Get('total')
+  async getTotalVisitors() {
+    const total = await this.visitorService.getTotalVisitors();
+    return { total };
   }
 }
+
+// @Get(':id')
+// findOne(@Param('id') id: string) {
+//   return this.visitorService.findOne(+id);
+// }
+
+// @Patch(':id')
+// update(@Param('id') id: string, @Body() updateVisitorDto: UpdateVisitorDto) {
+//   return this.visitorService.update(+id, updateVisitorDto);
+// }
+
+// @Delete(':id')
+// remove(@Param('id') id: string) {
+//   return this.visitorService.remove(+id);
+// }

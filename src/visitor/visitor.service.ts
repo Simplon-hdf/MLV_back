@@ -1,26 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVisitorDto } from './dto/create-visitor.dto';
-import { UpdateVisitorDto } from './dto/update-visitor.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { visitor } from '@prisma/client';
 
 @Injectable()
 export class VisitorService {
-  create(createVisitorDto: CreateVisitorDto) {
-    return 'This action adds a new visitor';
+  private visitorCount = 0;
+  constructor(private prisma: PrismaService) {}
+
+  async getTotalVisitors() {
+    const visitors = await this.prisma.visitor.findMany();
+    const total = visitors.reduce((acc, visitor) => acc + visitor.visits, 0);
+    return total;
   }
 
-  findAll() {
-    return `This action returns all visitor`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} visitor`;
-  }
-
-  update(id: number, updateVisitorDto: UpdateVisitorDto) {
-    return `This action updates a #${id} visitor`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} visitor`;
+  async incrementation(app) {
+    app.use((req, res, next) => {
+      if (req.method === 'Get' && req.path === '/') {
+        this.visitorCount++;
+      }
+      next();
+    });
   }
 }
