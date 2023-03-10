@@ -8,12 +8,17 @@ import { createWriteStream } from 'fs';
 import * as sharp from 'sharp';
 import * as path from 'path';
 import { PrismaService } from '../prisma/prisma.service';
+import { Article } from '../article/entities/article.entity';
+import { ArticleService } from '../article/article.service';
 
 @Injectable()
 export class ImagesService {
   private readonly imagePath = './res/public/images/';
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly articleService: ArticleService,
+  ) {}
 
   // compress images
   async compressImage(file: Express.Multer.File, format = 'jpg') {
@@ -30,6 +35,7 @@ export class ImagesService {
 
     const writeStream = createWriteStream(filePath);
     writeStream.write(compressedImage);
+    writeStream.end();
     return compressedImage;
   }
   async remove(filename: string): Promise<string> {
@@ -75,7 +81,9 @@ export class ImagesService {
   async stockUrl(imageUrl: string, element: string, id: number): Promise<any> {
     const url = await this.getUrl(imageUrl);
     const data = await this.verifyImageOrPageExist(id, element);
-    // add url in database
+    if (element == 'article') {
+      await this.articleService.updateArticle(id, { url_img: url });
+    }
     data.url_img = url;
     return true;
   }

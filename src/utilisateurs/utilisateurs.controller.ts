@@ -27,8 +27,11 @@ export class UtilisateursController {
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
-  create(@Body() createUtilisateurDto: CreateUtilisateurDto) {
-    return this.utilisateursService.createUtilisateur(createUtilisateurDto);
+  create(@Body() createUtilisateurDto: CreateUtilisateurDto, role: RolesEnum) {
+    return this.utilisateursService.createUtilisateur(
+      createUtilisateurDto,
+      role,
+    );
   }
 
   @Roles(RolesEnum.moderateur, RolesEnum.administrateur)

@@ -8,6 +8,8 @@ import { UtilisateursService } from '../utilisateurs/utilisateurs.service';
 import * as bcrypt from 'bcrypt';
 import { MailService } from '../mail/mail.service';
 import { CreateUtilisateurDto } from '../utilisateurs/dto/create-utilisateur.dto';
+import { RolesEnum } from '../enum/roles.enum';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -15,14 +17,9 @@ export class AuthService {
     private readonly usersService: UtilisateursService,
     private readonly jwtService: JwtService,
   ) {}
-  async signUp(user: CreateUtilisateurDto) {
-    const token = Math.floor(1000 + Math.random() * 9000).toString();
-    // create user in db
-    await this.usersService.createUtilisateur(user);
-    // send confirmation mail
-    await this.mailService.sendUserConfirmation(user, token);
+  async register(user: CreateUtilisateurDto, role: RolesEnum): Promise<any> {
+    return await this.usersService.createUtilisateur(user, role);
   }
-
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findOneByEmail(email);
     console.log(user);
