@@ -171,3 +171,11 @@ model password_reset {
   token     String   @unique
   createdAt DateTime @default(now())
 }
+
+model alert {
+  id        Int      @id @default(autoincrement())
+  title     String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

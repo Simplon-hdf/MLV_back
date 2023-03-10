@@ -61,7 +61,7 @@ export class ImagesController {
   async uploadImage(@UploadedFile() file) {
     // Resizing image to 300x300 using sharp module
     await this.imagesService.compressImage(file, 'jpg'); // Do something with the image (e.g. save it to the database, etc.)
-    await this.imagesService.stockUrl(file.filename, 'article', 2);
+    await this.imagesService.stockUrl(file.filename, 'article', 6);
     // Return the image file name and path
     return {
       //originalFilename: file.originalname,
