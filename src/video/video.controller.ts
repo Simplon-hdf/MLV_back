@@ -6,19 +6,27 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { VideoService } from './video.service';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/auth/roles/roles.decorator';
+import { RolesEnum } from 'src/enum/roles.enum';
 
 @Controller('video')
 @ApiTags('Video')
 export class VideoController {
   constructor(private readonly videoService: VideoService) {}
 
+  @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
   @Post()
-  create(@Body() createVideoDto: CreateVideoDto) {
+  @ApiQuery({ name: 'role', enum: RolesEnum })
+  async create(
+    @Body() createVideoDto: CreateVideoDto,
+    @Query('role') role: RolesEnum = RolesEnum.administrateur,
+  ) {
     return this.videoService.create(createVideoDto);
   }
 
