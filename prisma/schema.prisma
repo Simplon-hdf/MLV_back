@@ -179,3 +179,7 @@ model alert {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+model visitor {
+  id     Int @id @default(autoincrement())
+  visits Int @default(0)
+}
