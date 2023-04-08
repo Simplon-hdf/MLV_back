@@ -10,7 +10,7 @@ import { ImagesService } from './images.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiTags, ApiBody } from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
 
 @Controller('images')
@@ -41,10 +41,7 @@ export class ImagesController {
         destination: './res/public/images', // externaliser le chemin.
         filename: (req, file, cb) => {
           const randomName = uuidv4(); //Array(32)
-          console.log('debug filename', randomName, extname(file.originalname));
           cb(null, `${randomName}${extname(file.originalname)}`);
-          // Penser a rajouter la modification du nom de l'image
-          // pour mieux récupérer l'image dans la base de données.
         },
       }),
       fileFilter: (req, file, cb) => {
@@ -60,8 +57,8 @@ export class ImagesController {
   )
   async uploadImage(@UploadedFile() file) {
     // Resizing image to 300x300 using sharp module
-    await this.imagesService.compressImage(file, 'jpg'); // Do something with the image (e.g. save it to the database, etc.)
-    await this.imagesService.stockUrl(file.filename, 'article', 6);
+    await this.imagesService.compressImage(file, 'jpg'); // Do s// omething with the image (e.g. save it to the database, etc.)
+    await this.imagesService.stockUrl(file.filename, 'article', 2);
     // Return the image file name and path
     return {
       //originalFilename: file.originalname,
@@ -69,11 +66,22 @@ export class ImagesController {
     };
   }
 
+  // get url of image or page
+  async getUrlForDelete(imageUrl) {
+    // delete url with correct target
+    await this.imagesService.getForDelete(imageUrl);
+  }
+
   @Post('delete/:filename')
   async delete(@Param('filename') filename: string) {
     const image = await this.imagesService.remove(filename);
+
     if (image === undefined) {
       throw new NotFoundException('Image does not exist!');
     }
+  }
+
+  async saveUrl(imageUrl: string, element: string, id: number) {
+    const url = await this.imagesService.stockUrl(imageUrl, element, id);
   }
 }

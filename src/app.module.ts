@@ -31,4 +31,8 @@ import { AlertModule } from './alert/alert.module';
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply().forRoutes('*');
+  }
+}
