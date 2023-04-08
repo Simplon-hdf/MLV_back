@@ -7,13 +7,14 @@ import * as cookieParser from 'cookie-parser';
 import { VisitorController } from './visitor/visitor.controller';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  //generate swagger json
   const config = new DocumentBuilder()
     .setTitle('MLV API')
     .setDescription('The MLV  API description')
     .setVersion('0.1')
+    .addTag('MLV')
+    .setBasePath('api')
     .build();
-
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   app.use((req, res, next) => {

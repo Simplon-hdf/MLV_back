@@ -16,7 +16,7 @@ import { UpdatePasswordUtilisateurDto } from './dto/update-password-utilisateur.
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { Roles } from '../auth/roles/roles.decorator';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { RolesEnum } from '../enum/roles.enum';
 
 @Controller('utilisateurs')
@@ -27,8 +27,11 @@ export class UtilisateursController {
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
-  create(@Body() createUtilisateurDto: CreateUtilisateurDto) {
-    return this.utilisateursService.createUtilisateur(createUtilisateurDto);
+  create(@Body() createUtilisateurDto: CreateUtilisateurDto, role: RolesEnum) {
+    return this.utilisateursService.createUtilisateur(
+      createUtilisateurDto,
+      role,
+    );
   }
 
   @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
@@ -74,5 +77,31 @@ export class UtilisateursController {
   @Get('email/:email')
   findByEmail(@Param('email') email: string) {
     return this.utilisateursService.findOneByEmail(email);
+  }
+
+  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Post('assign_conseiller')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        id_jeune: {
+          type: 'number',
+        },
+        id_conseiller: {
+          type: 'number',
+        },
+      },
+    },
+  })
+  assignConseiller(
+    @Body('id_jeune') id_jeune: number,
+    @Body('id_conseiller') id_conseiller: number,
+  ) {
+    return this.utilisateursService.assignConseillerToJeune(
+      id_jeune,
+      id_conseiller,
+    );
   }
 }

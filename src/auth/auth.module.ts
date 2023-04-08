@@ -19,7 +19,7 @@ import { VisitorCounterMiddleware } from 'src/visitor/visitorCountMiddleware.mid
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '7d' },
     }),
     
   ],

@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Request,
   Patch,
   Post,
   UseGuards,
@@ -28,10 +29,13 @@ export class ArticleController {
   @Post('create-article')
   @ApiQuery({ name: 'role', enum: RolesEnum })
   async create(
+    @Request() req,
     @Body() createArticleDto: CreateArticleDto,
     @Query('role') role: RolesEnum = RolesEnum.administrateur,
   ) {
-    return this.articleService.createArticle(createArticleDto);
+    //find token in header req
+    console.log(req.cookies.jwt);
+    return this.articleService.createArticle(createArticleDto, req.cookies.jwt);
   }
 
   @Get('articles')

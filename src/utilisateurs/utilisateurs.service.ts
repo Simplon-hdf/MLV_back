@@ -7,6 +7,7 @@ import { CreateUtilisateurDto } from './dto/create-utilisateur.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { pick } from 'lodash';
 import { UpdatePasswordUtilisateurDto } from './dto/update-password-utilisateur.dto';
+import { RolesEnum } from '../enum/roles.enum';
 
 // Constantes
 const allowedFields = [
@@ -34,19 +35,72 @@ export class UtilisateursService {
   // Créer un utilisateur
   async createUtilisateur(
     createUtilisateurDto: CreateUtilisateurDto,
+    role: RolesEnum,
   ): Promise<Utilisateur> {
     const salt = await bcrypt.genSalt(SaltLength.Default);
     const hashedPassword = await bcrypt.hash(
       createUtilisateurDto.mot_de_passe,
       salt,
     );
-    return this.prisma.utilisateur.create({
+    //connect to admin table
+    const user = await this.prisma.utilisateur.create({
       data: {
         ...createUtilisateurDto,
         mot_de_passe: hashedPassword,
         uuid: uuidv4(),
+        role: role,
       },
     });
+
+    switch (role) {
+      case RolesEnum.administrateur:
+        await this.prisma.administrateur.create({
+          data: {
+            utilisateur: {
+              connect: {
+                id: user.id,
+              },
+            },
+          },
+        });
+        break;
+      case RolesEnum.jeune:
+        await this.prisma.jeune.create({
+          data: {
+            utilisateur: {
+              connect: {
+                id: user.id,
+              },
+            },
+          },
+        });
+        break;
+      case RolesEnum.conseiller:
+        const a = await this.prisma.conseiller.create({
+          data: {
+            utilisateur: {
+              connect: {
+                id: user.id,
+              },
+            },
+          },
+        });
+        console.log(a);
+        break;
+      case RolesEnum.moderateur:
+        await this.prisma.moderateur.create({
+          data: {
+            utilisateur: {
+              connect: {
+                id: user.id,
+              },
+            },
+          },
+        });
+        break;
+    }
+    console.log(user);
+    return user;
   }
 
   // Trouver un utilisateur par ID
@@ -128,5 +182,33 @@ export class UtilisateursService {
   // Trouver un utilisateur par email
   async findOneByEmail(email: string): Promise<Utilisateur> {
     return this.prisma.utilisateur.findFirst({ where: { email } });
+  }
+  async assignConseillerToJeune(idJeune: number, idConseiller: number) {
+    const jeune = await this.prisma.jeune.findUnique({
+      where: { id: idJeune },
+    });
+    if (!jeune) {
+      throw new NotFoundException(`Jeune with ID ${idJeune} not found`);
+    }
+
+    const conseiller = await this.prisma.conseiller.findUnique({
+      where: { id: idConseiller },
+    });
+    if (!conseiller) {
+      throw new NotFoundException(
+        `Conseiller with ID ${idConseiller} not found`,
+      );
+    }
+
+    return this.prisma.est_attribuer.create({
+      data: {
+        jeune: {
+          connect: { id: idJeune },
+        },
+        conseiller: {
+          connect: { id: idConseiller },
+        },
+      },
+    });
   }
 }
