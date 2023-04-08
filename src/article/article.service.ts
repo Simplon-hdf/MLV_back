@@ -23,18 +23,37 @@ export class ArticleService {
     const article = await this.prisma.article.create({
       data: articleData,
     });
+    const id = article.id;
     // find role and id in token
-    const role = await this.jwtService.verify(token, {
+    const user = this.jwtService.verify(token, {
       secret: jwtConstants.secret,
     });
-    console.log(role);
-    const redige = await this.prisma.redige.create({
-      data: {
-        id_conseiller: 1,
-        id_moderateur: 1,
-        id_post: article.id,
-      },
+    //
+    const id_user: number = user.sub;
+    console.log(user);
+    const conseiller = await this.prisma.conseiller.findUnique({
+      where: { id: id_user },
     });
+    //create relation between article and user
+    if (
+      user.role == RolesEnum.moderateur ||
+      user.role == RolesEnum.administrateur
+    ) {
+      await this.prisma.redige.create({
+        data: {
+          article: {
+            connect: {
+              id: id,
+            },
+          },
+          conseiller: {
+            connect: conseiller ? { id: conseiller.id } : undefined,
+            create: conseiller ? undefined : { id: id_user },
+          },
+        },
+      });
+    }
+
     return article;
   }
 

@@ -183,4 +183,32 @@ export class UtilisateursService {
   async findOneByEmail(email: string): Promise<Utilisateur> {
     return this.prisma.utilisateur.findFirst({ where: { email } });
   }
+  async assignConseillerToJeune(idJeune: number, idConseiller: number) {
+    const jeune = await this.prisma.jeune.findUnique({
+      where: { id: idJeune },
+    });
+    if (!jeune) {
+      throw new NotFoundException(`Jeune with ID ${idJeune} not found`);
+    }
+
+    const conseiller = await this.prisma.conseiller.findUnique({
+      where: { id: idConseiller },
+    });
+    if (!conseiller) {
+      throw new NotFoundException(
+        `Conseiller with ID ${idConseiller} not found`,
+      );
+    }
+
+    return this.prisma.est_attribuer.create({
+      data: {
+        jeune: {
+          connect: { id: idJeune },
+        },
+        conseiller: {
+          connect: { id: idConseiller },
+        },
+      },
+    });
+  }
 }

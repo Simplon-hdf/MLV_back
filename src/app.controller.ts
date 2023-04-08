@@ -53,6 +53,11 @@ export class AppController {
     await this.authService.register(user, RolesEnum.moderateur);
   }
 
+  @Post('auth/signup/jeune')
+  @ApiOperation({ summary: 'Sign up a new jeune' })
+  async signUpJeune(@Body() user: CreateUtilisateurDto) {
+    await this.authService.register(user, RolesEnum.jeune);
+  }
   @Roles(RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('auth/signup/administrateur')

@@ -24,7 +24,7 @@ model conseiller {
 }
 
 model est_attribuer {
-  id_jeune      Int
+  id_jeune      Int        @unique
   id_conseiller Int
   conseiller    conseiller @relation(fields: [id_conseiller], references: [id], onDelete: NoAction, onUpdate: NoAction)
   jeune         jeune      @relation(fields: [id_jeune], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -42,7 +42,7 @@ model gere {
 }
 
 model jeune {
-  id            Int             @id
+  id            Int             @id @unique
   est_attribuer est_attribuer[]
   inscrit       inscrit[]
   utilisateur   utilisateur     @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -116,14 +116,14 @@ model creer {
 }
 
 model redige {
-  id_conseiller Int
-  id_moderateur Int
-  id_post       Int
-  conseiller    conseiller @relation(fields: [id_conseiller], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  moderateur    moderateur @relation(fields: [id_moderateur], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  article       article    @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  conseiller   conseiller? @relation(fields: [conseillerId], references: [id])
+  conseillerId Int?
+  moderateur   moderateur? @relation(fields: [moderateurId], references: [id])
+  moderateurId Int?
+  article      article     @relation(fields: [articleId], references: [id])
+  articleId    Int         @unique
 
-  @@id([id_conseiller, id_moderateur, id_post])
+  @@id([articleId])
 }
 
 enum role {
