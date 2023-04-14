@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVideoDto } from './dto/create-video.dto';
-import { UpdateVideoDto } from './dto/update-video.dto';
+import * as ffmpeg from 'fluent-ffmpeg';
+import * as fs from 'fs';
+import { ArticleService } from 'src/article/article.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class VideoService {
-  create(createVideoDto: CreateVideoDto) {
-    return 'This action adds a new video';
-  }
+  private readonly videoPath = './res/public/videos/';
 
-  findAll() {
-    return `This action returns all video`;
-  }
+  constructor(
+    private prisma: PrismaService,
+    private readonly articleService: ArticleService,
+  ) {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} video`;
-  }
-
-  update(id: number, updateVideoDto: UpdateVideoDto) {
-    return `This action updates a #${id} video`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} video`;
+  // compress Videos and sending on server
+  async compressVideo(
+    file: Express.Multer.File,
+    format = 'mp4',
+  ): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      ffmpeg(file.path)
+        .videoCodec('libx264')
+        .audioCodec('libmp3lame')
+        .size('360x480')
+        .format(format)
+        .keepDAR()
+        .on('error', function (err) {
+          console.log(`Error, cannot process video`);
+          reject(err);
+        })
+        .on('end', function () {
+          console.log(`Transcoding of succeeded!`);
+          fs.unlinkSync(file.path);
+          resolve();
+        })
+        .save(this.videoPath);
+    });
   }
 }
