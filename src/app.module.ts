@@ -13,6 +13,7 @@ import { MessagesModule } from './messages/messages.module';
 import { ImagesModule } from './images/images.module';
 import { AlertModule } from './alert/alert.module';
 import { VisitorCounterMiddleware } from './visitor/visitorCountMiddleware.middleware';
+import { VideoModule } from './video/video.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { VisitorCounterMiddleware } from './visitor/visitorCountMiddleware.middl
     MessagesModule,
     ImagesModule,
     AlertModule,
+    VideoModule,
   ],
   controllers: [AppController],
   providers: [PrismaService, AppService, VisitorCounterMiddleware],
