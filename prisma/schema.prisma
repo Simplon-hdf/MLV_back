@@ -86,7 +86,7 @@ model article {
   description      String?      @db.VarChar(250)
   meta_title       String?      @db.VarChar(50)
   categories       String?      @db.VarChar(50)
-  url_video        String?      @db.VarChar(350)
+  url_video        String?      @unique @db.VarChar(1245)
   slug             String?      @db.VarChar(50)
   tags             String?      @db.VarChar(50)
   status           String?      @db.VarChar(50)
