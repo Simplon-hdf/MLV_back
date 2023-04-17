@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UseGuards,
   UploadedFile,
+  NotFoundException,
 } from '@nestjs/common';
 import { VideoService } from './video.service';
 import { CreateVideoDto } from './dto/create-video.dto';
@@ -74,5 +75,16 @@ export class VideoController {
     return {
       compressedFilename: `${file.filename}`,
     };
+  }
+
+  // @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
+  @Delete('delete/:filename')
+  @ApiQuery({ name: 'role', enum: RolesEnum })
+  async delete(@Param('filename') filename: string) {
+    const video = await this.videoService.remove(filename);
+    if (video === undefined) {
+      throw new NotFoundException('Video does not exist!');
+    }
   }
 }
