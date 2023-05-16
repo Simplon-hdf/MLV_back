@@ -28,10 +28,7 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
   app.useWebSocketAdapter(new WsAdapter(app));
-  app.enableCors({
-    origin: 'http://localhost:3000',
-    credentials: true,
-  });
+  app.enableCors();
   app.use(cookieParser());
   await app.listen(3000);
 }
