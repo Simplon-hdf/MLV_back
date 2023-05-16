@@ -33,34 +33,41 @@ export class PasswordResetController {
   @Post('/forgot-password')
   async forgotPassword(@Body() dto: passwordForgotDto) {
     console.log(dto.email);
-    if (!dto.email) {
+    try {
+      if (!dto.email) {
+        throw new HttpException(
+          "L'adresse email est manquante.",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      // Vérifiez que l'e-mail est associé à un utilisateur
+      const utilisateur = await this.utilisateursService.findOneByEmail(
+        dto.email,
+      );
+      if (!utilisateur) {
+        throw new HttpException(
+          "Cette adresse email n'est pas associée à un utilisateur.",
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      // Générez un jeton JWT unique
+      const token = this.jwtService.sign(
+        { email: dto.email },
+        { expiresIn: '30s' },
+      );
+
+      await this.mailService.sendPasswordReset(dto.email, token);
+
+      // Enregistrez le jeton dans la base de données
+      return await this.passwordResetService.saveToken(dto.email, token);
+    } catch (e) {
       throw new HttpException(
-        "L'adresse email est manquante.",
-        HttpStatus.BAD_REQUEST,
+        "Une erreur s'est produite lors de l'envoi de l'e-mail.",
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-    // Vérifiez que l'e-mail est associé à un utilisateur
-    const utilisateur = await this.utilisateursService.findOneByEmail(
-      dto.email,
-    );
-    if (!utilisateur) {
-      throw new HttpException(
-        "Cette adresse email n'est pas associée à un utilisateur.",
-        HttpStatus.NOT_FOUND,
-      );
-    }
-
-    // Générez un jeton JWT unique
-    const token = this.jwtService.sign(
-      { email: dto.email },
-      { expiresIn: '30s' },
-    );
-
-    await this.mailService.sendPasswordReset(dto.email, token);
-
-    // Enregistrez le jeton dans la base de données
-    return await this.passwordResetService.saveToken(dto.email, token);
 
     // Envoyez un e-mail avec le jeton
   }

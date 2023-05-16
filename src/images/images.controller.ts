@@ -10,7 +10,14 @@ import { ImagesService } from './images.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { ApiConsumes, ApiTags, ApiBody } from '@nestjs/swagger';
+import {
+  ApiConsumes,
+  ApiTags,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotAcceptableResponse,
+} from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
 
 @Controller('images')
@@ -28,6 +35,52 @@ export class ImagesController {
       type: 'object',
       properties: {
         file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiForbiddenResponse({
+    description: 'Forbidden.',
+    status: 403,
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: {
+          type: 'number',
+          example: 403,
+        },
+        message: {
+          type: 'string',
+          example: 'Forbidden resource',
+        },
+      },
+    },
+  })
+  @ApiNotAcceptableResponse({
+    description: 'Not Acceptable.',
+    status: 406,
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: {
+          type: 'number',
+          example: 406,
+        },
+        message: {
+          type: 'string',
+          example: 'Not Acceptable image format',
+        },
+      },
+    },
+  })
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    schema: {
+      type: 'object',
+      properties: {
+        originalFilename: {
           type: 'string',
           format: 'binary',
         },
