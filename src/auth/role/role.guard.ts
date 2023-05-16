@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { RolesEnum } from '../../enum/roles.enum';
 import { JwtService } from '@nestjs/jwt';
@@ -20,17 +20,14 @@ export class RoleGuard implements CanActivate {
       return true;
     }
     const request = context.switchToHttp().getRequest();
-    const token = request.cookies.jwt;
-    console.log(token);
+    const token = request.headers.authorization.split(' ')[1];
     if (!token) {
       return false;
     }
 
-    const decoded = this.jwtService.verify(token, {
+    const user = this.jwtService.verify(token, {
       secret: jwtConstants.secret,
     });
-    const user = decoded;
-    console.log(user);
     return requiredRoles.some((role) => user.role === role);
   }
 }

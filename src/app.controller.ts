@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Post,
-  Query,
   Request,
   Res,
   UseGuards,
@@ -61,6 +60,10 @@ export class AppController {
   @ApiOperation({ summary: 'Sign up a new jeune' })
   async signUpJeune(@Body() user: CreateUtilisateurDto) {
     await this.authService.register(user, RolesEnum.jeune);
+    return {
+      statusCode: 201,
+      message: 'User registered successfully',
+    };
   }
   @Roles(RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
