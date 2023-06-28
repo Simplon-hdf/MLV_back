@@ -145,8 +145,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="76"
-                            class="link-to-prism">src/images/images.controller.ts:76</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="129"
+                            class="link-to-prism">src/images/images.controller.ts:129</a></div>
                 </td>
             </tr>
 
@@ -216,8 +216,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="70"
-                            class="link-to-prism">src/images/images.controller.ts:70</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="123"
+                            class="link-to-prism">src/images/images.controller.ts:123</a></div>
                 </td>
             </tr>
 
@@ -283,8 +283,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="84"
-                            class="link-to-prism">src/images/images.controller.ts:84</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="137"
+                            class="link-to-prism">src/images/images.controller.ts:137</a></div>
                 </td>
             </tr>
 
@@ -379,14 +379,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;upload&#x27;)<br />@ApiBody({required: true, type: &#x27;multipart/form-data&#x27;, schema: undefined})<br />@ApiConsumes(&#x27;multipart/form-data&#x27;)<br />@UseInterceptors(undefined)<br /></code>
+                    <code>@Post(&#x27;upload&#x27;)<br />@ApiBody({required: true, type: &#x27;multipart/form-data&#x27;, schema: undefined})<br />@ApiForbiddenResponse({description: &#x27;Forbidden.&#x27;, status: 403, schema: undefined})<br />@ApiNotAcceptableResponse({description: &#x27;Not Acceptable.&#x27;, status: 406, schema: undefined})<br />@ApiCreatedResponse({description: &#x27;The record has been successfully created.&#x27;, schema: undefined})<br />@ApiConsumes(&#x27;multipart/form-data&#x27;)<br />@UseInterceptors(undefined)<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="58"
-                            class="link-to-prism">src/images/images.controller.ts:58</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">src/images/images.controller.ts:111</a></div>
                 </td>
             </tr>
 
@@ -446,7 +446,14 @@ import { ImagesService } from &#x27;./images.service&#x27;;
 import { FileInterceptor } from &#x27;@nestjs/platform-express&#x27;;
 import { diskStorage } from &#x27;multer&#x27;;
 import { extname } from &#x27;path&#x27;;
-import { ApiConsumes, ApiTags, ApiBody } from &#x27;@nestjs/swagger&#x27;;
+import {
+  ApiConsumes,
+  ApiTags,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotAcceptableResponse,
+} from &#x27;@nestjs/swagger&#x27;;
 import { v4 as uuidv4 } from &#x27;uuid&#x27;;
 
 @Controller(&#x27;images&#x27;)
@@ -464,6 +471,52 @@ export class ImagesController {
       type: &#x27;object&#x27;,
       properties: {
         file: {
+          type: &#x27;string&#x27;,
+          format: &#x27;binary&#x27;,
+        },
+      },
+    },
+  })
+  @ApiForbiddenResponse({
+    description: &#x27;Forbidden.&#x27;,
+    status: 403,
+    schema: {
+      type: &#x27;object&#x27;,
+      properties: {
+        statusCode: {
+          type: &#x27;number&#x27;,
+          example: 403,
+        },
+        message: {
+          type: &#x27;string&#x27;,
+          example: &#x27;Forbidden resource&#x27;,
+        },
+      },
+    },
+  })
+  @ApiNotAcceptableResponse({
+    description: &#x27;Not Acceptable.&#x27;,
+    status: 406,
+    schema: {
+      type: &#x27;object&#x27;,
+      properties: {
+        statusCode: {
+          type: &#x27;number&#x27;,
+          example: 406,
+        },
+        message: {
+          type: &#x27;string&#x27;,
+          example: &#x27;Not Acceptable image format&#x27;,
+        },
+      },
+    },
+  })
+  @ApiCreatedResponse({
+    description: &#x27;The record has been successfully created.&#x27;,
+    schema: {
+      type: &#x27;object&#x27;,
+      properties: {
+        originalFilename: {
           type: &#x27;string&#x27;,
           format: &#x27;binary&#x27;,
         },

@@ -88,6 +88,7 @@
                                 <a href="#create" >create</a>
                             </li>
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#findAll" >findAll</a>
                             </li>
                             <li>
@@ -142,14 +143,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)<br />@UseGuards(JwtAuthGuard, RoleGuard)<br />@Post(&#x27;create-article&#x27;)<br />@ApiResponse({content: undefined, headers: undefined, isArray: false, links: undefined, schema: undefined, type: undefined, status: 200, description: &#x27;The article has been successfully created.&#x27;})<br /></code>
+                    <code>@Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)<br />@UseGuards(JwtAuthGuard, RoleGuard)<br />@Post(&#x27;create-article&#x27;)<br />@ApiResponse({status: 201, description: &#x27;The article has been successfully created.&#x27;, content: undefined})<br />@ApiResponse({status: 403, description: &#x27;cannot create article with this role&#x27;, content: undefined})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized user not connected&#x27;, content: undefined})<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="48"
-                            class="link-to-prism">src/article/article.controller.ts:48</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="105"
+                            class="link-to-prism">src/article/article.controller.ts:105</a></div>
                 </td>
             </tr>
 
@@ -214,6 +215,7 @@
                 <td class="col-md-4">
                     <a name="findAll"></a>
                     <span class="name">
+                        <span class="modifier">Async</span>
                         <span ><b>findAll</b></span>
                         <a href="#findAll"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -221,7 +223,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>findAll()</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findAll(res: <a href="../classes/GetArticleDto.html" target="_self">GetArticleDto</a>)</code>
                 </td>
             </tr>
 
@@ -229,14 +232,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;articles&#x27;)<br /></code>
+                    <code>@Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)<br />@UseGuards(JwtAuthGuard, RoleGuard)<br />@Get(&#x27;get-all-article&#x27;)<br />@ApiExtraModels(GetArticleDto)<br />@ApiResponse({status: 200, description: &#x27;get all article&#x27;, content: undefined})<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">src/article/article.controller.ts:59</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="147"
+                            class="link-to-prism">src/article/article.controller.ts:147</a></div>
                 </td>
             </tr>
 
@@ -245,8 +248,40 @@
                 <td class="col-md-4">
 
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>res</td>
+                                    <td>
+                                                <code><a href="../classes/GetArticleDto.html" target="_self" >GetArticleDto</a></code>
+                                    </td>
 
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -275,14 +310,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)<br />@UseGuards(JwtAuthGuard, RoleGuard)<br />@Get(&#x27;:id&#x27;)<br /></code>
+                    <code>@Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)<br />@UseGuards(JwtAuthGuard, RoleGuard)<br />@ApiParam({name: &#x27;id&#x27;, type: &#x27;number&#x27;, required: true, description: &#x27;id of article&#x27;, example: 1})<br />@ApiResponse({status: 200, description: &#x27;get one article&#x27;, content: undefined})<br />@Get(&#x27;:id&#x27;)<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="66"
-                            class="link-to-prism">src/article/article.controller.ts:66</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="186"
+                            class="link-to-prism">src/article/article.controller.ts:186</a></div>
                 </td>
             </tr>
 
@@ -359,8 +394,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="85"
-                            class="link-to-prism">src/article/article.controller.ts:85</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="206"
+                            class="link-to-prism">src/article/article.controller.ts:206</a></div>
                 </td>
             </tr>
 
@@ -437,8 +472,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="74"
-                            class="link-to-prism">src/article/article.controller.ts:74</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="194"
+                            class="link-to-prism">src/article/article.controller.ts:194</a></div>
                 </td>
             </tr>
 
@@ -488,7 +523,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
@@ -512,15 +547,24 @@
   Patch,
   Post,
   UseGuards,
-  Query,
+  Res,
+  Response,
 } from &#x27;@nestjs/common&#x27;;
 import { ArticleService } from &#x27;./article.service&#x27;;
 import { CreateArticleDto } from &#x27;./dto/create-article.dto&#x27;;
 import { UpdateArticleDto } from &#x27;./dto/update-article.dto&#x27;;
+import { GetArticleDto } from &#x27;./dto/get-article.dto&#x27;;
 import { Roles } from &#x27;../auth/roles/roles.decorator&#x27;;
 import { JwtAuthGuard } from &#x27;../auth/guard/jwt-auth.guard&#x27;;
 import { RoleGuard } from &#x27;../auth/role/role.guard&#x27;;
-import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from &#x27;@nestjs/swagger&#x27;;
+import {
+  ApiBearerAuth,
+  ApiExtraModels,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from &#x27;@nestjs/swagger&#x27;;
 import { RolesEnum } from &#x27;../enum/roles.enum&#x27;;
 
 @Controller(&#x27;article&#x27;)
@@ -533,39 +577,150 @@ export class ArticleController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post(&#x27;create-article&#x27;)
   @ApiResponse({
-    content: undefined,
-    headers: undefined,
-    isArray: false,
-    links: undefined,
-    schema: {
-      $ref: &#x27;#/components/schemas/Article&#x27;,
-      //one response 400
-      //one response 500
-      //one response 401
-      //one response 403
-      //one response 404
-    },
-    type: undefined,
-    status: 200,
+    //body response
+    status: 201,
     description: &#x27;The article has been successfully created.&#x27;,
+    content: {
+      &#x27;application/json&#x27;: {
+        schema: {
+          type: &#x27;object&#x27;,
+          properties: {
+            message: {
+              type: &#x27;string&#x27;,
+              example: &#x27;Article created successfully&#x27;,
+            },
+            StatusCode: {
+              type: &#x27;number&#x27;,
+              example: 201,
+            },
+            article: {
+              $ref: &#x27;#/components/schemas/CreateArticleDto&#x27;,
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: &#x27;cannot create article with this role&#x27;,
+    content: {
+      &#x27;application/json&#x27;: {
+        schema: {
+          properties: {
+            message: {
+              type: &#x27;string&#x27;,
+              example: &#x27;Forbidden&#x27;,
+            },
+            StatusCode: {
+              type: &#x27;number&#x27;,
+              example: 403,
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: &#x27;Unauthorized user not connected&#x27;,
+    content: {
+      &#x27;application/json&#x27;: {
+        schema: {
+          properties: {
+            message: {
+              type: &#x27;string&#x27;,
+              example: &#x27;Unauthorized&#x27;,
+            },
+            StatusCode: {
+              type: &#x27;number&#x27;,
+              example: 401,
+            },
+          },
+        },
+      },
+    },
   })
   async create(@Request() req, @Body() createArticleDto: CreateArticleDto) {
     //find token in header req
-    await this.articleService.createArticle(createArticleDto, req.cookies.jwt);
+    const article &#x3D; await this.articleService.createArticle(
+      createArticleDto,
+      req.cookies.jwt,
+    );
     //return success message
     return {
       message: &#x27;Article created successfully&#x27;,
       StatusCode: 200,
+      ...article,
     };
   }
 
-  @Get(&#x27;articles&#x27;)
-  findAll() {
+  @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Get(&#x27;get-all-article&#x27;)
+  @ApiExtraModels(GetArticleDto)
+  @ApiResponse({
+    status: 200,
+    description: &#x27;get all article&#x27;,
+    content: {
+      &#x27;application/json&#x27;: {
+        schema: {
+          type: &#x27;object&#x27;,
+          properties: {
+            StatusCode: {
+              type: &#x27;number&#x27;,
+              example: 200,
+            },
+            Message: {
+              type: &#x27;string&#x27;,
+              example: &#x27;get all article&#x27;,
+            },
+            article: {
+              $ref: &#x27;#/components/schemas/GetArticleDto&#x27;,
+            },
+          },
+        },
+      },
+    },
+  })
+  async findAll(@Response() res: GetArticleDto) {
     return this.articleService.findAll();
   }
 
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
+  @ApiParam({
+    name: &#x27;id&#x27;,
+    type: &#x27;number&#x27;,
+    required: true,
+    description: &#x27;id of article&#x27;,
+    example: 1,
+  })
+  @ApiResponse({
+    status: 200,
+    description: &#x27;get one article&#x27;,
+    content: {
+      &#x27;application/json&#x27;: {
+        schema: {
+          type: &#x27;object&#x27;,
+          properties: {
+            StatusCode: {
+              type: &#x27;number&#x27;,
+              example: 200,
+            },
+            Message: {
+              type: &#x27;string&#x27;,
+              example: &#x27;get one article&#x27;,
+            },
+            Article: {
+              type: &#x27;object&#x27;,
+              $ref: &#x27;#/components/schemas/GetArticleDto&#x27;,
+            },
+          },
+        },
+      },
+    },
+  })
   @Get(&#x27;:id&#x27;)
   async findOne(@Param(&#x27;id&#x27;) id: string) {
     return this.articleService.findOne(+id);
@@ -579,7 +734,8 @@ export class ArticleController {
     @Param(&#x27;id&#x27;) id: string,
     @Body() updateArticleDto: UpdateArticleDto,
   ) {
-    return this.articleService.updateArticle(+id, updateArticleDto);
+    await this.articleService.updateArticle(+id, updateArticleDto);
+    return;
   }
 
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
@@ -587,7 +743,11 @@ export class ArticleController {
   @Delete(&#x27;:id&#x27;)
   @ApiQuery({ name: &#x27;role&#x27;, enum: RolesEnum })
   async remove(@Param(&#x27;id&#x27;) id: string) {
-    return this.articleService.remove(+id);
+    await this.articleService.remove(+id);
+    return {
+      message: &#x27;Article deleted successfully&#x27;,
+      StatusCode: 200,
+    };
   }
 }
 </code></pre>

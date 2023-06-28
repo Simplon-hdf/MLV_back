@@ -78,6 +78,7 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#getProfile" >getProfile</a>
                             </li>
                             <li>
@@ -130,6 +131,7 @@
                 <td class="col-md-4">
                     <a name="getProfile"></a>
                     <span class="name">
+                        <span class="modifier">Async</span>
                         <span ><b>getProfile</b></span>
                         <a href="#getProfile"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -137,7 +139,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getProfile(req)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getProfile(req)</code>
                 </td>
             </tr>
 
@@ -151,8 +154,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="77"
-                            class="link-to-prism">src/app.controller.ts:77</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">src/app.controller.ts:85</a></div>
                 </td>
             </tr>
 
@@ -223,8 +226,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="89"
-                            class="link-to-prism">src/app.controller.ts:89</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="97"
+                            class="link-to-prism">src/app.controller.ts:97</a></div>
                 </td>
             </tr>
 
@@ -297,8 +300,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="38"
-                            class="link-to-prism">src/app.controller.ts:38</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/app.controller.ts:40</a></div>
                 </td>
             </tr>
 
@@ -380,8 +383,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="83"
-                            class="link-to-prism">src/app.controller.ts:83</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="91"
+                            class="link-to-prism">src/app.controller.ts:91</a></div>
                 </td>
             </tr>
 
@@ -454,8 +457,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="69"
-                            class="link-to-prism">src/app.controller.ts:69</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="77"
+                            class="link-to-prism">src/app.controller.ts:77</a></div>
                 </td>
             </tr>
 
@@ -532,8 +535,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="49"
-                            class="link-to-prism">src/app.controller.ts:49</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/app.controller.ts:51</a></div>
                 </td>
             </tr>
 
@@ -610,8 +613,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="62"
-                            class="link-to-prism">src/app.controller.ts:62</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/app.controller.ts:65</a></div>
                 </td>
             </tr>
 
@@ -649,7 +652,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>    <code>unknown</code>
 
                     </div>
                     <div class="io-description">
@@ -688,8 +691,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="56"
-                            class="link-to-prism">src/app.controller.ts:56</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/app.controller.ts:59</a></div>
                 </td>
             </tr>
 
@@ -746,7 +749,7 @@
   Controller,
   Get,
   Post,
-  Query,
+  Render,
   Request,
   Res,
   UseGuards,
@@ -761,6 +764,7 @@ import { Roles } from &#x27;./auth/roles/roles.decorator&#x27;;
 import { RoleGuard } from &#x27;./auth/role/role.guard&#x27;;
 import { RolesEnum } from &#x27;./enum/roles.enum&#x27;;
 import { VisitorCounterMiddleware } from &#x27;./visitor/visitorCountMiddleware.middleware&#x27;;
+import { MessagesService } from &#x27;./messages/messages.service&#x27;;
 
 @ApiTags(&#x27;auth&#x27;)
 @Controller()
@@ -768,6 +772,7 @@ export class AppController {
   constructor(
     private readonly visitor: VisitorCounterMiddleware,
     private readonly authService: AuthService,
+    private readonly messageService: MessagesService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -792,6 +797,7 @@ export class AppController {
   async signUpConseiller(@Body() user: CreateUtilisateurDto) {
     await this.authService.register(user, RolesEnum.conseiller);
   }
+
   @Roles(RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post(&#x27;auth/signup/moderateur&#x27;)
@@ -804,7 +810,12 @@ export class AppController {
   @ApiOperation({ summary: &#x27;Sign up a new jeune&#x27; })
   async signUpJeune(@Body() user: CreateUtilisateurDto) {
     await this.authService.register(user, RolesEnum.jeune);
+    return {
+      statusCode: 201,
+      message: &#x27;User registered successfully&#x27;,
+    };
   }
+
   @Roles(RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post(&#x27;auth/signup/administrateur&#x27;)
@@ -817,8 +828,8 @@ export class AppController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(&#x27;profile&#x27;)
   @ApiOperation({ summary: &#x27;Get the current user profile&#x27; })
-  getProfile(@Request() req) {
-    return req.user;
+  async getProfile(@Request() req) {
+    await this.authService.validateUser(req.user.email, req.user.mot_de_passe);
   }
 
   @Post(&#x27;auth/logout&#x27;)

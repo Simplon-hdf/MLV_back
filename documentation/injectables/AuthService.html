@@ -455,13 +455,19 @@ export class AuthService {
       throw new NotFoundException(&#x27;User not found&#x27;);
     }
     if (!bcrypt.compareSync(pass, user.mot_de_passe)) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(&#x27;Wrong informations&#x27;);
     }
   }
 
   // login with dto
   async login(user: any): Promise&lt;any&gt; {
-    const payload &#x3D; { email: user.email, sub: user.id, role: user.role };
+    const payload &#x3D; {
+      email: user.email,
+      id: user.id,
+      role: user.role,
+      prenom: user.prenom,
+      nom: user.nom,
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };

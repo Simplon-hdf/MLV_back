@@ -12,13 +12,9 @@ export class VisitorCounterMiddleware implements NestMiddleware {
       create: { visits: 1 },
       update: { visits: { increment: 1 } },
     });
-    // this.visitorCount++;
-    // console.log(`Number of visitor: ${this.visitorCount}`);
+
     console.log(`Number of visitors: ${visitor.visits}`);
 
     next();
   }
-  //   getCounter(): number {
-  //     return this.visitorCount;
-  //   }
 }

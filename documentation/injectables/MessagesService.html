@@ -88,7 +88,15 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#findMessagesByRoomId" >findMessagesByRoomId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#findOne" >findOne</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findRoomBySenderId" >findRoomBySenderId</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -257,8 +265,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="35"
-                            class="link-to-prism">src/messages/messages.service.ts:35</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="14"
+                            class="link-to-prism">src/messages/messages.service.ts:14</a></div>
                 </td>
             </tr>
 
@@ -269,6 +277,77 @@
                     <div class="io-description">
                         <b>Returns : </b>    <code>Promise&lt;message[]&gt;</code>
 
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findMessagesByRoomId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>findMessagesByRoomId</b></span>
+                        <a href="#findMessagesByRoomId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findMessagesByRoomId(roomId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="17"
+                            class="link-to-prism">src/messages/messages.service.ts:17</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>roomId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;message[]&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -296,8 +375,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="39"
-                            class="link-to-prism">src/messages/messages.service.ts:39</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="20"
+                            class="link-to-prism">src/messages/messages.service.ts:20</a></div>
                 </td>
             </tr>
 
@@ -349,6 +428,77 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="findRoomBySenderId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>findRoomBySenderId</b></span>
+                        <a href="#findRoomBySenderId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findRoomBySenderId(senderId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">src/messages/messages.service.ts:25</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>senderId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="remove"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -367,8 +517,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="55"
-                            class="link-to-prism">src/messages/messages.service.ts:55</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="74"
+                            class="link-to-prism">src/messages/messages.service.ts:74</a></div>
                 </td>
             </tr>
 
@@ -438,8 +588,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/messages/messages.service.ts:43</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/messages/messages.service.ts:62</a></div>
                 </td>
             </tr>
 
@@ -505,7 +655,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Get, Injectable, Render } from &#x27;@nestjs/common&#x27;;
 import { PrismaService } from &#x27;../prisma/prisma.service&#x27;;
 import { message } from &#x27;@prisma/client&#x27;;
 import { CreateMessageDto } from &#x27;./dto/create-message.dto&#x27;;
@@ -516,35 +666,54 @@ export class MessagesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createMessageDto: CreateMessageDto): Promise&lt;message&gt; {
-    const receiver &#x3D; await this.prisma.utilisateur.findUnique({
-      where: { id: createMessageDto.receiverId },
-    });
-    const sender &#x3D; await this.prisma.utilisateur.findUnique({
-      where: { id: createMessageDto.senderId },
-    });
-    return this.prisma.message.create({
-      data: {
-        content: createMessageDto.content,
-        receiver: {
-          connect: {
-            id: receiver.id,
-          },
-        },
-        sender: {
-          connect: {
-            id: sender.id,
-          },
-        },
-      },
-    });
+    return this.prisma.message.create({ data: createMessageDto });
   }
-
   async findAll(): Promise&lt;message[]&gt; {
     return this.prisma.message.findMany();
   }
-
+  async findMessagesByRoomId(roomId: string): Promise&lt;message[]&gt; {
+    return this.prisma.message.findMany({ where: { roomId } });
+  }
   async findOne(id: number): Promise&lt;message&gt; {
     return this.prisma.message.findUnique({ where: { id } });
+  }
+
+  //find room where id is sender or recerver id
+  async findRoomBySenderId(senderId: number) {
+    return this.prisma.message.findMany({
+      select: {
+        roomId: true,
+      },
+      where: {
+        OR: [
+          {
+            AND: [
+              {
+                senderId,
+              },
+              {
+                receiverId: {
+                  not: senderId,
+                },
+              },
+            ],
+          },
+          {
+            AND: [
+              {
+                senderId: {
+                  not: senderId,
+                },
+              },
+              {
+                receiverId: senderId,
+              },
+            ],
+          },
+        ],
+      },
+      distinct: [&#x27;roomId&#x27;], // Ajout de la propriété distinct
+    });
   }
 
   async update(

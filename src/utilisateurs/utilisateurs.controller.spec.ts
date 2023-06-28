@@ -3,6 +3,7 @@ import { UtilisateursController } from './utilisateurs.controller';
 import { UtilisateursService } from './utilisateurs.service';
 import { CreateUtilisateurDto } from './dto/create-utilisateur.dto';
 import { UpdateUtilisateurDto } from './dto/update-utilisateur.dto';
+import { RolesEnum } from '../enum/roles.enum';
 
 describe('UtilisateursController', () => {
   let controller: UtilisateursController;
@@ -34,6 +35,7 @@ describe('UtilisateursController', () => {
       email: 'test@example.com',
       nom: 'Test',
       prenom: 'User',
+      role: RolesEnum.conseiller,
       date_naissance: new Date('1990-01-01'),
       mot_de_passe: 'password',
       telephone: '1234567890',
@@ -45,7 +47,9 @@ describe('UtilisateursController', () => {
       const createdUser = { id: 1, ...dto };
       (service.createUtilisateur as jest.Mock).mockResolvedValue(createdUser);
 
-      expect(await controller.create(dto)).toEqual(createdUser);
+      expect(await controller.create(dto, RolesEnum.conseiller)).toEqual(
+        createdUser,
+      );
       expect(service.createUtilisateur).toHaveBeenCalledWith(dto);
     });
   });
@@ -98,6 +102,7 @@ describe('UtilisateursController', () => {
       email: 'test@example.com',
       nom: 'Test',
       prenom: 'User',
+      role: RolesEnum.conseiller,
       date_naissance: new Date('1990-01-01'),
       mot_de_passe: 'password',
       telephone: '1234567890',

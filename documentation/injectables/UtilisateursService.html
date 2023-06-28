@@ -96,6 +96,13 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#findAllUsers" >findAllUsers</a>
+                            </li>
+                            <li>
+                                <a href="#findAllUtilisateurs" >findAllUtilisateurs</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#findOne" >findOne</a>
                             </li>
                             <li>
@@ -202,8 +209,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="186"
-                            class="link-to-prism">src/utilisateurs/utilisateurs.service.ts:186</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="196"
+                            class="link-to-prism">src/utilisateurs/utilisateurs.service.ts:196</a></div>
                 </td>
             </tr>
 
@@ -285,8 +292,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="173"
-                            class="link-to-prism">src/utilisateurs/utilisateurs.service.ts:173</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="183"
+                            class="link-to-prism">src/utilisateurs/utilisateurs.service.ts:183</a></div>
                 </td>
             </tr>
 
@@ -471,6 +478,82 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="findAllUsers"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>findAllUsers</b></span>
+                        <a href="#findAllUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findAllUsers()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="147"
+                            class="link-to-prism">src/utilisateurs/utilisateurs.service.ts:147</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findAllUtilisateurs"></a>
+                    <span class="name">
+                        <span ><b>findAllUtilisateurs</b></span>
+                        <a href="#findAllUtilisateurs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>findAllUtilisateurs()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="225"
+                            class="link-to-prism">src/utilisateurs/utilisateurs.service.ts:225</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="findOne"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -560,8 +643,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="183"
-                            class="link-to-prism">src/utilisateurs/utilisateurs.service.ts:183</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="193"
+                            class="link-to-prism">src/utilisateurs/utilisateurs.service.ts:193</a></div>
                 </td>
             </tr>
 
@@ -785,8 +868,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="148"
-                            class="link-to-prism">src/utilisateurs/utilisateurs.service.ts:148</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="158"
+                            class="link-to-prism">src/utilisateurs/utilisateurs.service.ts:158</a></div>
                 </td>
             </tr>
 
@@ -997,7 +1080,17 @@ export class UtilisateursService {
     }
     await this.prisma.utilisateur.delete({ where: { id } });
   }
-
+  //GET ALL USERS BUT ONLY WITH THEIR ID, NAME, FIRSTNAME AND EMAIL
+  async findAllUsers() {
+    return this.prisma.utilisateur.findMany({
+      select: {
+        id: true,
+        nom: true,
+        prenom: true,
+        email: true,
+      },
+    });
+  }
   //changer le mot de passe d&#x27;un utilisateur et verifier que l&#x27;ancien mot de passe est correct
   async updatePassword(
     id: number,
@@ -1062,6 +1155,17 @@ export class UtilisateursService {
         conseiller: {
           connect: { id: idConseiller },
         },
+      },
+    });
+  }
+
+  findAllUtilisateurs() {
+    return this.prisma.utilisateur.findMany({
+      include: {
+        administrateur: true,
+        conseiller: true,
+        jeune: true,
+        moderateur: true,
       },
     });
   }

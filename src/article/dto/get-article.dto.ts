@@ -1,13 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsString } from 'class-validator';
-export class CreateArticleDto {
+import { IsDate, IsNumber, IsString } from 'class-validator';
+export class GetArticleDto {
   @ApiProperty({
-    type: 'string',
-    format: 'binary',
-    description: "Fichier d'image",
+    type: Number,
+    description: "id de l'article",
     required: true,
+    example: 1,
   })
-  file: Express.Multer.File;
+  @IsNumber()
+  id: number;
+
   @ApiProperty({
     type: String,
     description: "titre de l'article",
@@ -29,7 +31,7 @@ export class CreateArticleDto {
   @ApiProperty({
     type: Date,
     description: "date de modification de l'article",
-    required: false,
+    required: true,
     example: '2021-01-01T00:00:00.000Z',
   })
   @IsDate()
@@ -38,11 +40,11 @@ export class CreateArticleDto {
   @ApiProperty({
     type: String,
     description: "url de l'image de l'article",
-    required: false,
+    required: true,
     example:
       'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
   })
-  url_img?: string;
+  url_img: string;
 
   @ApiProperty({
     type: String,
@@ -63,7 +65,7 @@ export class CreateArticleDto {
   @ApiProperty({
     type: String,
     description: "sous titre de l'article",
-    required: false,
+    required: true,
     example: 'sous titre',
   })
   sous_titre: string;
@@ -103,10 +105,10 @@ export class CreateArticleDto {
   @ApiProperty({
     type: String,
     description: "url de la video de l'article",
-    required: false,
+    required: true,
     example: 'https://www.youtube.com/watch?v=1y_kfWUCFDQ',
   })
-  url_video?: string;
+  url_video: string;
 
   @ApiProperty({
     type: String,
@@ -132,5 +134,3 @@ export class CreateArticleDto {
   })
   status: string;
 }
-
-//additionnal properties

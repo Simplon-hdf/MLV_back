@@ -12,9 +12,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: jwtConstants.secret,
     });
   }
-  //extract jwt from cookie
 
+  /**
+   *
+   * @param payload
+   * @returns {Promise<{role: any, id: any, prenom: any, nom: any, email: any}>}
+   */
   async validate(payload: any) {
-    return { userId: payload.sub, email: payload.email, role: payload.role };
+    return {
+      email: payload.email,
+      id: payload.id,
+      role: payload.role,
+      prenom: payload.prenom,
+      nom: payload.nom,
+    };
   }
 }

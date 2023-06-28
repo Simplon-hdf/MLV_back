@@ -236,7 +236,7 @@
 
 
         <div class="tab-pane fade  tab-source-code" id="c-source">
-            <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, CanActivate, ExecutionContext } from &#x27;@nestjs/common&#x27;;
+            <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CanActivate, ExecutionContext, Injectable } from &#x27;@nestjs/common&#x27;;
 import { Reflector } from &#x27;@nestjs/core&#x27;;
 import { RolesEnum } from &#x27;../../enum/roles.enum&#x27;;
 import { JwtService } from &#x27;@nestjs/jwt&#x27;;
@@ -258,17 +258,14 @@ export class RoleGuard implements CanActivate {
       return true;
     }
     const request &#x3D; context.switchToHttp().getRequest();
-    const token &#x3D; request.cookies.jwt;
-    console.log(token);
+    const token &#x3D; request.headers.authorization.split(&#x27; &#x27;)[1];
     if (!token) {
       return false;
     }
 
-    const decoded &#x3D; this.jwtService.verify(token, {
+    const user &#x3D; this.jwtService.verify(token, {
       secret: jwtConstants.secret,
     });
-    const user &#x3D; decoded;
-    console.log(user);
     return requiredRoles.some((role) &#x3D;&gt; user.role &#x3D;&#x3D;&#x3D; role);
   }
 }

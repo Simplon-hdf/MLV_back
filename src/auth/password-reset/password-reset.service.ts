@@ -14,7 +14,13 @@ export class PasswordResetService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async resetPassword(token: string, password: string): Promise<void> {
+  /**
+   *
+   * @param {string} token
+   * @param {string} password
+   * @returns {Promise<void>}
+   */
+  async resetPassword(token: string, password: string) {
     const isTokenValid = this.verifyToken(token);
     if (!isTokenValid) {
       throw new Error('Invalid token');
@@ -34,16 +40,6 @@ export class PasswordResetService {
       password,
     );
 
-    try {
-      await this.prisma.password_reset.delete({
-        where: {
-          id: passwordReset.id,
-        },
-      });
-    } catch (error) {
-      // handle error deleting password reset entry
-      console.error(error);
-    }
     // send an email to confirm the password has been reset
   }
 

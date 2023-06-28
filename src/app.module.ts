@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  forwardRef,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UtilisateursModule } from './utilisateurs/utilisateurs.module';
@@ -13,6 +18,8 @@ import { MessagesModule } from './messages/messages.module';
 import { ImagesModule } from './images/images.module';
 import { AlertModule } from './alert/alert.module';
 import { VisitorCounterMiddleware } from './visitor/visitorCountMiddleware.middleware';
+import { MessagesService } from './messages/messages.service';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -25,12 +32,19 @@ import { VisitorCounterMiddleware } from './visitor/visitorCountMiddleware.middl
     PagesModule,
     AuthModule,
     MailModule,
+    ChatModule,
     MessagesModule,
     ImagesModule,
     AlertModule,
+    ChatModule,
   ],
   controllers: [AppController],
-  providers: [PrismaService, AppService, VisitorCounterMiddleware],
+  providers: [
+    PrismaService,
+    AppService,
+    VisitorCounterMiddleware,
+    MessagesService,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

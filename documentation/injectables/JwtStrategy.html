@@ -140,8 +140,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="17"
-                            class="link-to-prism">src/auth/strategy/jwt.strategy.ts:17</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="15"
+                            class="link-to-prism">src/auth/strategy/jwt.strategy.ts:15</a></div>
                 </td>
             </tr>
 
@@ -209,10 +209,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: jwtConstants.secret,
     });
   }
-  //extract jwt from cookie
-
   async validate(payload: any) {
-    return { userId: payload.sub, email: payload.email, role: payload.role };
+    return {
+      email: payload.email,
+      id: payload.id,
+      role: payload.role,
+      prenom: payload.prenom,
+      nom: payload.nom,
+    };
   }
 }
 </code></pre>
