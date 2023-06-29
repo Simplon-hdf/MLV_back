@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Render,
   Request,
   Res,
   UseGuards,
@@ -17,6 +18,8 @@ import { Roles } from './auth/roles/roles.decorator';
 import { RoleGuard } from './auth/role/role.guard';
 import { RolesEnum } from './enum/roles.enum';
 import { VisitorCounterMiddleware } from './visitor/visitorCountMiddleware.middleware';
+import { MessagesService } from './messages/messages.service';
+import { UtilisateursService } from './utilisateurs/utilisateurs.service';
 
 @ApiTags('auth')
 @Controller()
@@ -24,6 +27,8 @@ export class AppController {
   constructor(
     private readonly visitor: VisitorCounterMiddleware,
     private readonly authService: AuthService,
+    private readonly messageService: MessagesService,
+    private readonly userService: UtilisateursService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -47,13 +52,22 @@ export class AppController {
   @ApiOperation({ summary: 'Sign up a new conseiller' })
   async signUpConseiller(@Body() user: CreateUtilisateurDto) {
     await this.authService.register(user, RolesEnum.conseiller);
+    return {
+      statusCode: 201,
+      message: 'User registered successfully',
+    };
   }
+
   @Roles(RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('auth/signup/moderateur')
   @ApiOperation({ summary: 'Sign up a new moderateur' })
   async signUpModerateur(@Body() user: CreateUtilisateurDto) {
     await this.authService.register(user, RolesEnum.moderateur);
+    return {
+      statusCode: 201,
+      message: 'User registered successfully',
+    };
   }
 
   @Post('auth/signup/jeune')
@@ -65,20 +79,31 @@ export class AppController {
       message: 'User registered successfully',
     };
   }
-  @Roles(RolesEnum.administrateur)
-  @UseGuards(JwtAuthGuard, RoleGuard)
+
+  //@Roles(RolesEnum.administrateur)
+  //@UseGuards(JwtAuthGuard, RoleGuard)
   @Post('auth/signup/administrateur')
   @ApiOperation({ summary: 'Sign up a new administrateur' })
   async signUpAdministrateur(@Body() user: CreateUtilisateurDto) {
     await this.authService.register(user, RolesEnum.administrateur);
+
+    return {
+      statusCode: 201,
+      message: 'User registered successfully',
+    };
   }
 
-  @Roles(RolesEnum.conseiller)
+  @Roles(
+    RolesEnum.conseiller,
+    RolesEnum.moderateur,
+    RolesEnum.administrateur,
+    RolesEnum.jeune,
+  )
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('profile')
   @ApiOperation({ summary: 'Get the current user profile' })
-  getProfile(@Request() req) {
-    return req.user;
+  async getProfile(@Request() req) {
+    return await this.userService.findOne(req.user.id);
   }
 
   @Post('auth/logout')

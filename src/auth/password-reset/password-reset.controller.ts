@@ -1,22 +1,23 @@
+import { UtilisateursService } from '../../utilisateurs/utilisateurs.service';
 import {
+  BadRequestException,
   Body,
   Controller,
-  HttpException,
-  HttpStatus,
+  InternalServerErrorException,
+  NotFoundException,
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { MailService } from '../../mail/mail.service';
-import { UtilisateursService } from '../../utilisateurs/utilisateurs.service';
-import { JwtService } from '@nestjs/jwt';
+import { ApiTags } from '@nestjs/swagger';
 import { PasswordResetService } from './password-reset.service';
+import { MailService } from '../../mail/mail.service';
+import { JwtService } from '@nestjs/jwt';
+import { Roles } from '../roles/roles.decorator';
+import { RolesEnum } from '../../enum/roles.enum';
+import { JwtAuthGuard } from '../guard/jwt-auth.guard';
+import { RoleGuard } from '../role/role.guard';
 import { passwordForgotDto } from '../dto/password-forgot.dto';
 import { passwordResetDto } from '../dto/password-reset.dto';
-import { JwtAuthGuard } from '../guard/jwt-auth.guard';
-import { Roles } from '../roles/roles.decorator';
-import { ApiTags } from '@nestjs/swagger';
-import { RoleGuard } from '../role/role.guard';
-import { RolesEnum } from '../../enum/roles.enum';
 
 @Controller('password-reset')
 @ApiTags('Password-reset')
@@ -32,57 +33,43 @@ export class PasswordResetController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('/forgot-password')
   async forgotPassword(@Body() dto: passwordForgotDto) {
-    console.log(dto.email);
-    try {
-      if (!dto.email) {
-        throw new HttpException(
-          "L'adresse email est manquante.",
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+    if (!dto.email) {
+      throw new BadRequestException("L'adresse email est manquante.");
+    }
 
-      // Vérifiez que l'e-mail est associé à un utilisateur
-      const utilisateur = await this.utilisateursService.findOneByEmail(
-        dto.email,
-      );
-      if (!utilisateur) {
-        throw new HttpException(
-          "Cette adresse email n'est pas associée à un utilisateur.",
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      // Générez un jeton JWT unique
-      const token = this.jwtService.sign(
-        { email: dto.email },
-        { expiresIn: '30s' },
-      );
-
-      await this.mailService.sendPasswordReset(dto.email, token);
-
-      // Enregistrez le jeton dans la base de données
-      return await this.passwordResetService.saveToken(dto.email, token);
-    } catch (e) {
-      throw new HttpException(
-        "Une erreur s'est produite lors de l'envoi de l'e-mail.",
-        HttpStatus.INTERNAL_SERVER_ERROR,
+    const utilisateur = await this.utilisateursService.findOneByEmail(
+      dto.email,
+    );
+    if (!utilisateur) {
+      throw new NotFoundException(
+        "Cette adresse email n'est pas associée à un utilisateur.",
       );
     }
 
-    // Envoyez un e-mail avec le jeton
+    const token = this.jwtService.sign(
+      { email: dto.email },
+      { expiresIn: '300s' },
+    );
+
+    try {
+      await this.mailService.sendPasswordReset(dto.email, token);
+      await this.passwordResetService.saveToken(dto.email, token);
+    } catch (e) {
+      throw new InternalServerErrorException(
+        "Une erreur s'est produite lors de l'envoi de l'e-mail.",
+      );
+    }
   }
+
   @Roles(RolesEnum.jeune)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('/reset-password')
   async resetPassword(@Body() body: passwordResetDto): Promise<void> {
     if (!body.token || !body.password) {
-      throw new HttpException(
+      throw new BadRequestException(
         'Les paramètres de la requête sont manquants.',
-        HttpStatus.BAD_REQUEST,
       );
     }
-
-    // Réinitialisez le mot de passe avec le jeton fourni
     await this.passwordResetService.resetPassword(body.token, body.password);
   }
 }

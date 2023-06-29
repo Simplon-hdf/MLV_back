@@ -93,8 +93,8 @@ export class ImagesController {
       storage: diskStorage({
         destination: './res/public/images', // externaliser le chemin.
         filename: (req, file, cb) => {
-          const randomName = uuidv4(); //Array(32)
-          cb(null, `${randomName}${extname(file.originalname)}`);
+          const ext = extname(file.originalname);
+          cb(null, `${ext}`);
         },
       }),
       fileFilter: (req, file, cb) => {
@@ -108,33 +108,10 @@ export class ImagesController {
       },
     }),
   )
-  async uploadImage(@UploadedFile() file) {
-    // Resizing image to 300x300 using sharp module
-    await this.imagesService.compressImage(file, 'jpg'); // Do s// omething with the image (e.g. save it to the database, etc.)
-    await this.imagesService.stockUrl(file.filename, 'article', 2);
-    // Return the image file name and path
-    return {
-      //originalFilename: file.originalname,
-      compressedFilename: `${file.filename}`,
-    };
-  }
-
-  // get url of image or page
-  async getUrlForDelete(imageUrl) {
-    // delete url with correct target
-    await this.imagesService.getForDelete(imageUrl);
-  }
-
-  @Post('delete/:filename')
-  async delete(@Param('filename') filename: string) {
-    const image = await this.imagesService.remove(filename);
-
-    if (image === undefined) {
-      throw new NotFoundException('Image does not exist!');
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    if (!file) {
+      throw new NotFoundException('No file found');
     }
-  }
-
-  async saveUrl(imageUrl: string, element: string, id: number) {
-    const url = await this.imagesService.stockUrl(imageUrl, element, id);
+    return this.imagesService.uploadImage(file);
   }
 }

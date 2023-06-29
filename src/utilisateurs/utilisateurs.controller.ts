@@ -24,27 +24,53 @@ import { RolesEnum } from '../enum/roles.enum';
 export class UtilisateursController {
   constructor(private readonly utilisateursService: UtilisateursService) {}
 
+  /**
+   *
+   * @param {CreateUtilisateurDto} createUtilisateurDto
+   * @param {RolesEnum} role
+   * @returns {{User: Promise<Utilisateur>, Message: string, StatusCode: number}}
+   */
   @Roles(RolesEnum.conseiller, RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
   create(@Body() createUtilisateurDto: CreateUtilisateurDto, role: RolesEnum) {
-    return this.utilisateursService.createUtilisateur(
-      createUtilisateurDto,
-      role,
-    );
+    return {
+      Message: 'User created Succefuly',
+      User: this.utilisateursService.createUtilisateur(
+        createUtilisateurDto,
+        role,
+      ),
+      StatusCode: 201,
+    };
   }
 
-  @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @Get()
+  /**
+   *
+   * @returns {{Users: Promise<Utilisateur[]>, statusCode: number}}
+   */
+  @Get('Users')
   findAll() {
-    return this.utilisateursService.findAll();
+    return {
+      statusCode: 200,
+      Message: 'Users found successfully',
+      Users: this.utilisateursService.findAll(),
+    };
   }
+
+  /**
+   *
+   * @param {string} id
+   * @returns {{User: Promise<Utilisateur>, Message: string, statusCode: number}}
+   */
   @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.utilisateursService.findOne(+id);
+    return {
+      Message: 'User found successfully',
+      statusCode: 200,
+      User: this.utilisateursService.findOne(+id),
+    };
   }
   @SetMetadata('roles', ['conseiller'])
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -53,13 +79,21 @@ export class UtilisateursController {
     @Param('id') id: string,
     @Body() updateUtilisateurDto: UpdateUtilisateurDto,
   ) {
-    return this.utilisateursService.update(+id, updateUtilisateurDto);
+    this.utilisateursService.update(+id, updateUtilisateurDto);
+    return {
+      StatusCode: 200,
+      Message: 'Utilisateur modifié avec succès',
+    };
   }
   @Roles(RolesEnum.administrateur, RolesEnum.moderateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.utilisateursService.remove(+id);
+    this.utilisateursService.remove(+id);
+    return {
+      StatusCode: 200,
+      Message: 'Utilisateur supprimé avec succès',
+    };
   }
 
   @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
@@ -69,19 +103,27 @@ export class UtilisateursController {
     @Param('id') id: string,
     @Body() updateUtilisateurDto: UpdatePasswordUtilisateurDto,
   ) {
-    return this.utilisateursService.updatePassword(+id, updateUtilisateurDto);
+    this.utilisateursService.updatePassword(+id, updateUtilisateurDto);
+    return {
+      StatusCode: 200,
+      Message: 'Mot de passe changé avec succès',
+    };
   }
   //find by email
   @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('email/:email')
   findByEmail(@Param('email') email: string) {
-    return this.utilisateursService.findOneByEmail(email);
+    return {
+      StatusCode: 200,
+      Message: 'User found successfully',
+      User: this.utilisateursService.findOneByEmail(email),
+    };
   }
 
   @Roles(RolesEnum.moderateur, RolesEnum.administrateur)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @Post('assign_conseiller')
+  @Post('assignConseiller')
   @ApiBody({
     schema: {
       type: 'object',
@@ -99,9 +141,11 @@ export class UtilisateursController {
     @Body('id_jeune') id_jeune: number,
     @Body('id_conseiller') id_conseiller: number,
   ) {
-    return this.utilisateursService.assignConseillerToJeune(
-      id_jeune,
-      id_conseiller,
-    );
+    this.utilisateursService.assignConseillerToJeune(id_jeune, id_conseiller);
+    return {
+      StatusCode: 200,
+      Message: 'Conseiller bien assignée au jeune',
+    };
   }
+  //pas de authguard
 }

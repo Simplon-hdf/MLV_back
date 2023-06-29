@@ -22,7 +22,6 @@ export class AuthService {
   }
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findOneByEmail(email);
-    console.log(user);
     if (user && bcrypt.compareSync(pass, user.mot_de_passe)) {
       return user;
     }
@@ -30,13 +29,19 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
     if (!bcrypt.compareSync(pass, user.mot_de_passe)) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Wrong informations');
     }
   }
 
   // login with dto
   async login(user: any): Promise<any> {
-    const payload = { email: user.email, sub: user.id, role: user.role };
+    const payload = {
+      email: user.email,
+      id: user.id,
+      role: user.role,
+      prenom: user.prenom,
+      nom: user.nom,
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };

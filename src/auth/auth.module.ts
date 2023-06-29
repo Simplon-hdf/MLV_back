@@ -12,6 +12,7 @@ import { PasswordResetService } from './password-reset/password-reset.service';
 import { UtilisateursService } from '../utilisateurs/utilisateurs.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { VisitorCounterMiddleware } from 'src/visitor/visitorCountMiddleware.middleware';
+import { MessagesService } from '../messages/messages.service';
 @Module({
   controllers: [AppController, PasswordResetController],
   imports: [
@@ -21,7 +22,6 @@ import { VisitorCounterMiddleware } from 'src/visitor/visitorCountMiddleware.mid
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '7d' },
     }),
-    
   ],
   providers: [
     PrismaService,
@@ -31,6 +31,7 @@ import { VisitorCounterMiddleware } from 'src/visitor/visitorCountMiddleware.mid
     PasswordResetService,
     UtilisateursService,
     VisitorCounterMiddleware,
+    MessagesService,
   ],
   exports: [AuthService],
 })
