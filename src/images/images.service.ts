@@ -11,7 +11,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @Injectable()
 export class ImagesService {
   private readonly s3: S3;
-  private readonly bucketName = 'mlvbucket-1';
+  private readonly bucketName = process.env.AWS_S3_BUCKET_NAME;
 
   constructor(private prisma: PrismaService) {
     this.s3 = new S3({
